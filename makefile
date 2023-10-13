@@ -5,7 +5,7 @@ CXX = g++
 CXXFLAGS = -Wall -std=c++17
 
 # Specify the target file
-TARGET = vehicle_configuration_app
+TARGET = main
 
 # Specify the source files
 SOURCES = VehicleConfiguration.cpp Database.cpp main.cpp Menu.cpp Exception.cpp

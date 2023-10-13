@@ -63,3 +63,6 @@ database.db
 
 # Mac OS
 .DS_Store
+
+# the built application folder
+main
