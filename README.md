@@ -4,7 +4,7 @@
 The Vehicle Configuration System is a C++ application that assists dealers in recording and managing vehicle configurations. The system gathers details about vehicles, displays the data, and offers options to save this information to a file.
 
 <p align="center">
-  <img src="https://github.com/BrendanGlancy/CISS256/assets/61941978/74857802-cfd2-4f08-b9ed-a62558db8aa5" alt="image"/>
+  <img src="https://github.com/BrendanGlancy/CISS256/assets/61941978/3d13fe7f-2d95-4e04-a7ec-ee42a16c8968" alt="image"/>
 </p>
 
 ## Table of Contents
