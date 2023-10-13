@@ -6,10 +6,9 @@
 
 class Menu {
 public:
+  void welcome();
   void displayMenu();
-
-private:
-    void welcome();
+  void configureMenu();
 };
 
 #endif // VEHICLECONFIGURATION_HPP

@@ -1,7 +1,11 @@
 #include "VehicleConfiguration.hpp"
 #include "Database.hpp"
+#include "Menu.hpp"
 
 int main() {
+  Menu menu;
+  menu.welcome();
+
   VehicleConfiguration vehicleConfig;
   vehicleConfig.collectData();
 

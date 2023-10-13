@@ -32,7 +32,7 @@ std::string VehicleConfiguration::setColor(std::string prompt) {
       case 'W': return "White";
       case 'G': return "Grey";
       case 'B': return "Black";
-      case 'Q': std::exit(0);
+      case 'Q': if (menuCallback) menuCallback(); return "Quit";
       default: throw std::runtime_error("Error reading color");
     }
 }
@@ -42,7 +42,10 @@ std::string VehicleConfiguration::setEngineType() {
       auto type = inputWithPrompt("EV or IC: ");
       if (type == "E" || type == "EV") return "EV";
       if (type == "I" || type == "IC") return "IC";
-      throw std::runtime_error("Error reading engine type");
+      if (type == "Q") {
+        if (menuCallback) menuCallback();
+        return "Quit";
+      }
     } while (true);
 }
 
@@ -52,8 +55,20 @@ std::string VehicleConfiguration::setCargoOrPassenger() {
     switch (choice) {
         case 'C': return "Cargo";
         case 'P': return "Passenger";
-        case 'Q': exit(1);
+        case 'Q': if (menuCallback) menuCallback(); return "Quit";
         default: throw std::runtime_error("Error reading cargo or passenger type");
+    }
+  }
+}
+std::string VehicleConfiguration::setCargoRoofline() {
+  while (true) {
+    char choice = toupper(inputWithPrompt("Cargo Roofline (L)ow, (R)aised, (H)igh: ")[0]);
+    switch (choice) {
+        case 'L': return "Low";
+        case 'R': return "Raised";
+        case 'H': return "High";
+        case 'Q': if (menuCallback) menuCallback(); return "Quit";
+        default: throw std::runtime_error("Error reading cargo roofline");
     }
   }
 }
@@ -65,7 +80,7 @@ std::string VehicleConfiguration::setWheelbase() {
         case 'S': return "Short";
         case 'M': return "Medium";
         case 'E': return "Extended";
-        case 'Q': exit(1);
+        case 'Q': if (menuCallback) menuCallback(); return "Quit";
         default: throw std::runtime_error("Error reading wheelbase");
     }
   }
@@ -90,4 +105,6 @@ void VehicleConfiguration::collectData() {
     }
 }
 
-
+void VehicleConfiguration::setCarData(int quantity) {
+  // TODO
+}

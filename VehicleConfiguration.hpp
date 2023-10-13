@@ -1,6 +1,7 @@
 #ifndef VEHICLECONFIGURATION_HPP
 #define VEHICLECONFIGURATION_HPP
 
+#include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
@@ -19,22 +20,25 @@ struct car {
 // Declaration of the 'VehicleConfiguration' class
 class VehicleConfiguration {
 public:
-    void run();
-    void collectData();
-    car getCarData() const { return carData; }
+  using Callback = std::function<void()>;
+  void setMenuCallback(Callback callback) { menuCallback = std::move(callback); }
+  void run();
+  void collectData();
+  car getCarData() const { return carData; }
 
 private:
-    car carData;
+  car carData;
 
-    void welcomeMessage();
-    std::string inputWithPrompt(const std::string& prompt);
-    int inputQuantity();
-    std::string setColor(std::string prompt);
-    std::string setEngineType();
-    std::string setCargoOrPassenger();
-    std::string setCargoRoofline();
-    std::string setWheelbase();
-    void setCarData(int quantity);
+  Callback menuCallback;
+  void welcomeMessage();
+  std::string inputWithPrompt(const std::string& prompt);
+  int inputQuantity();
+  std::string setColor(std::string prompt);
+  std::string setEngineType();
+  std::string setCargoOrPassenger();
+  std::string setCargoRoofline();
+  std::string setWheelbase();
+  void setCarData(int quantity);
 };
 
 #endif // VEHICLECONFIGURATION_HPP

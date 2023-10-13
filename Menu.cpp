@@ -1,4 +1,5 @@
 #include "Menu.hpp"
+#include "VehicleConfiguration.hpp"
 
 void Menu::welcome() {
   std::cout << "\033[1;36m-----------------------------------------------------------------" << std::endl;
@@ -21,4 +22,9 @@ void Menu::displayMenu() {
   std::cout << "\033[1;31m4.\033[0m Exit" << std::endl;
   std::cout << std::endl;
   std::cout << "\033[1;34mEnter your choice: \033[0m";
+}
+
+void Menu::configureMenu() {
+  VehicleConfiguration config;
+  config.setMenuCallback([this] { displayMenu(); });
 }
