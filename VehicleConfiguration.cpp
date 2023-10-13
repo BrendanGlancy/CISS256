@@ -1,4 +1,5 @@
 #include "VehicleConfiguration.hpp" 
+#include "Exceptions.hpp"
 #include <cctype>
 #include <cstdlib>
 
@@ -33,7 +34,7 @@ std::string VehicleConfiguration::setColor(std::string prompt) {
       case 'W': return "White";
       case 'G': return "Grey";
       case 'B': return "Black";
-      case 'Q': if (menuCallback) menuCallback(); return "Quit";
+      case 'Q': throw UserQuitException();
       default: throw std::runtime_error("Error reading color");
     }
 }
@@ -44,10 +45,7 @@ std::string VehicleConfiguration::setEngineType() {
       type = toupper(type[0]);
       if (type == "E" || type == "EV") return "EV";
       if (type == "I" || type == "IC") return "IC";
-      if (type == "Q") {
-        if (menuCallback) menuCallback();
-        return "Quit";
-      }
+      if (type == "Q") throw UserQuitException();
     } while (true);
 }
 
@@ -57,7 +55,7 @@ std::string VehicleConfiguration::setCargoOrPassenger() {
     switch (choice) {
         case 'C': return "Cargo";
         case 'P': return "Passenger";
-        case 'Q': if (menuCallback) menuCallback(); return "Quit";
+        case 'Q': throw UserQuitException();
         default: throw std::runtime_error("Error reading cargo or passenger type");
     }
   }
@@ -69,7 +67,7 @@ std::string VehicleConfiguration::setCargoRoofline() {
         case 'L': return "Low";
         case 'R': return "Raised";
         case 'H': return "High";
-        case 'Q': if (menuCallback) menuCallback(); return "Quit";
+        case 'Q': throw UserQuitException();
         default: throw std::runtime_error("Error reading cargo roofline");
     }
   }
@@ -82,7 +80,7 @@ std::string VehicleConfiguration::setWheelbase() {
         case 'S': return "Short";
         case 'M': return "Medium";
         case 'E': return "Extended";
-        case 'Q': if (menuCallback) menuCallback(); return "Quit";
+        case 'Q': throw UserQuitException();
         default: throw std::runtime_error("Error reading wheelbase");
     }
   }
@@ -90,6 +88,7 @@ std::string VehicleConfiguration::setWheelbase() {
 
 // we need to collect the data pass it to our database class to be stored in a database
 void VehicleConfiguration::collectData() {
+  try {
     carData.dealerName = inputWithPrompt("Dealer Name: ");
     carData.memoReference = inputWithPrompt("Memo Reference: ");
     carData.quantity = inputQuantity();
@@ -105,6 +104,11 @@ void VehicleConfiguration::collectData() {
       carData.cargoRoofline = "Medium";
       carData.wheelbase = "Medium";
     }
+  } catch (const UserQuitException& e) {
+    if (menuCallback) {
+      menuCallback();
+    }
+  }
 }
 
 void VehicleConfiguration::setCarData(int quantity) {
