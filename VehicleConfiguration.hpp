@@ -34,8 +34,7 @@ private:
     std::string setWheelbase();
     void setCarData(int quantity);
     void collectData();
-    void displayData();
-    void saveToFile();
+    car getCarData() const { return carData; }
 };
 
 #endif // VEHICLECONFIGURATION_HPP

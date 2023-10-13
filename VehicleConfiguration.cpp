@@ -3,7 +3,6 @@
 
 // Path: VehicleConfiguration.cpp
 
-
 std::string VehicleConfiguration::inputWithPrompt(const std::string& prompt) {
     std::cout << prompt;
     std::string input;
@@ -74,5 +73,21 @@ std::string VehicleConfiguration::setWheelbase() {
 
 // we need to collect the data pass it to our database class to be stored in a database
 void VehicleConfiguration::collectData() {
-
+    carData.dealerName = inputWithPrompt("Dealer Name: ");
+    carData.memoReference = inputWithPrompt("Memo Reference: ");
+    carData.quantity = inputQuantity();
+    carData.color = setColor(inputWithPrompt("Color (W)hite, (G)ray, (B)lack: "));
+    carData.evOrIc = setEngineType();
+    setCarData(carData.quantity);
+    if (carData.evOrIc != "EV") {
+      carData.cargoOrPassenger = setCargoOrPassenger();
+      carData.cargoRoofline = setCargoRoofline();
+      carData.wheelbase = setWheelbase();
+    } else if (carData.evOrIc == "EV") {
+      carData.cargoOrPassenger = "Cargo";
+      carData.cargoRoofline = "Medium";
+      carData.wheelbase = "Medium";
+    }
 }
+
+

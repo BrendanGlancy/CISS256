@@ -12,4 +12,4 @@ private:
     void welcome();
 };
 
-#endif
+#endif // VEHICLECONFIGURATION_HPP
