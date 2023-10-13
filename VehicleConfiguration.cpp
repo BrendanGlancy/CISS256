@@ -1,4 +1,5 @@
 #include "VehicleConfiguration.hpp" 
+#include <cctype>
 #include <cstdlib>
 
 // Path: VehicleConfiguration.cpp
@@ -40,6 +41,7 @@ std::string VehicleConfiguration::setColor(std::string prompt) {
 std::string VehicleConfiguration::setEngineType() {
     do {
       auto type = inputWithPrompt("EV or IC: ");
+      type = toupper(type[0]);
       if (type == "E" || type == "EV") return "EV";
       if (type == "I" || type == "IC") return "IC";
       if (type == "Q") {

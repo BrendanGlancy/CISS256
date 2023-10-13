@@ -8,7 +8,7 @@ CXXFLAGS = -Wall -std=c++17
 TARGET = vehicle_configuration_app
 
 # Specify the source files
-SOURCES = VehicleConfiguration.cpp Database.cpp main.cpp Menu.cpp
+SOURCES = VehicleConfiguration.cpp Database.cpp main.cpp Menu.cpp Exception.cpp
 
 # Specify the object files
 OBJECTS = $(SOURCES:.cpp=.o)
