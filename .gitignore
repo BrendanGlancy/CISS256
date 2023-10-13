@@ -65,4 +65,4 @@ database.db
 .DS_Store
 
 # the built application folder
-main
+car_app

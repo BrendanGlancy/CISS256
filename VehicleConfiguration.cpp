@@ -1,7 +1,5 @@
 #include "VehicleConfiguration.hpp" 
 #include "Exceptions.hpp"
-#include <cctype>
-#include <cstdlib>
 
 // Path: VehicleConfiguration.cpp
 
@@ -104,7 +102,7 @@ void VehicleConfiguration::collectData() {
       carData.cargoRoofline = "Medium";
       carData.wheelbase = "Medium";
     }
-  } catch (const UserQuitException& e) {
+  } catch (const UserQuitException&) {
     if (menuCallback) {
       menuCallback();
     }

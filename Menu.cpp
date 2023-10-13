@@ -24,7 +24,24 @@ void Menu::displayMenu() {
   std::cout << "\033[1;34mEnter your choice: \033[0m";
 }
 
+int Menu::getMenuChoice() {
+  int choice;
+  std::cin >> choice;
+  return choice;
+}
+
 void Menu::configureMenu() {
   VehicleConfiguration config;
   config.setMenuCallback([this] { displayMenu(); });
+}
+
+void Menu::exit() {
+  std::cout << "\033[1;31mExiting...\033[0m" << std::endl;
+  std::cout << std::endl;
+  std::cout << "\033[1;36m-----------------------------------------------------------------\033[0m" << std::endl;
+  std::cout << std::endl;
+  std::cout << std::endl;
+  std::cout << std::endl;
+  std::cout << std::endl;
+  std::exit(0);
 }

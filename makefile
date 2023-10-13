@@ -5,10 +5,10 @@ CXX = g++
 CXXFLAGS = -Wall -std=c++17
 
 # Specify the target file
-TARGET = main
+TARGET = car_app
 
 # Specify the source files
-SOURCES = VehicleConfiguration.cpp Database.cpp main.cpp Menu.cpp Exception.cpp
+SOURCES = VehicleConfiguration.cpp Database.cpp main.cpp Menu.cpp Exceptions.cpp
 
 # Specify the object files
 OBJECTS = $(SOURCES:.cpp=.o)

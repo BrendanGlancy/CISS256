@@ -9,6 +9,8 @@
 #include <cctype>
 #include <limits>
 #include <fstream>
+#include <cctype>
+#include <cstdlib>
 
 // Declaration of the 'car' struct
 struct car {
