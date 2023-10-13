@@ -20,6 +20,8 @@ struct car {
 class VehicleConfiguration {
 public:
     void run();
+    void collectData();
+    car getCarData() const { return carData; }
 
 private:
     car carData;
@@ -33,8 +35,6 @@ private:
     std::string setCargoRoofline();
     std::string setWheelbase();
     void setCarData(int quantity);
-    void collectData();
-    car getCarData() const { return carData; }
 };
 
 #endif // VEHICLECONFIGURATION_HPP

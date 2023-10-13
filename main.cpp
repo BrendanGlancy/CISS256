@@ -6,7 +6,7 @@ int main() {
   vehicleConfig.collectData();
 
   Database dbController;
-  dbController.storeVehicleConfiguration();
+  dbController.storeVehicleConfiguration(vehicleConfig.getCarData());
 
   return 0;
 }
