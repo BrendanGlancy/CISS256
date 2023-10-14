@@ -6,6 +6,7 @@ int main() {
   // obj init
   Menu menu;
   VehicleConfiguration vehicleConfig;
+  Database dbController;
 
   menu.welcome();
   menu.displayMenu();
@@ -20,7 +21,7 @@ int main() {
       menu.exit();
       break;
     case 3:
-      menu.exit();
+      dbController.storeVehicleConfiguration(vehicleConfig.getCarData());
       break;
     case 4:
       menu.exit();
@@ -30,8 +31,6 @@ int main() {
       break;
   }
 
-  Database dbController;
-  dbController.storeVehicleConfiguration(vehicleConfig.getCarData());
 
   return 0;
 }
