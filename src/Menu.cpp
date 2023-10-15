@@ -1,5 +1,5 @@
-#include "../lib/header.h"
 #include "Menu.hpp"
+#include "../lib/header.h"
 #include "VehicleConfiguration.hpp"
 
 void Menu::welcome() {
