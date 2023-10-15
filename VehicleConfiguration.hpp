@@ -15,8 +15,8 @@
 struct car {
   float carID;
   std::string dealerName, memoReference, color, evOrIc, cargoOrPassenger,
-      cargoRoofline, wheelbase;
-  int year, quantity;
+      cargoRoofline, wheelbase, make, model;
+  int year, quantity, price;
 };
 
 class VehicleConfiguration {
