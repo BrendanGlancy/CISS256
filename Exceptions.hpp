@@ -5,12 +5,12 @@
 
 class UserQuitException : public std::runtime_error {
 public:
-    UserQuitException(); 
+  UserQuitException();
 };
 
 class InvalidChoiceException : public std::runtime_error {
 public:
-    InvalidChoiceException();
+  InvalidChoiceException();
 };
 
 // ... Additional exception classes ...
