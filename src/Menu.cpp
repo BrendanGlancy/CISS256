@@ -4,7 +4,8 @@
 
 void Menu::welcome() {
   system("clear");
-  std::cout << "\033[1;36m-----------------------------------------------------"
+  gotoxy(0, 0, 36); // Cyan color
+  std::cout << "-----------------------------------------------------"
                "------------"
             << std::endl;
   std::cout << " __          __    _                               _ "
@@ -22,7 +23,7 @@ void Menu::welcome() {
   std::cout << "                                                     "
             << std::endl;
   std::cout << "---------------------------------------------------------------"
-               "--\033[0m"
+               "--"
             << std::endl;
   std::cout << std::endl;
 }
@@ -45,15 +46,15 @@ int Menu::getMenuChoice() {
 
 void Menu::configCarPrompt() {
   system("clear");
-  gotoxy(0, 2);
+  gotoxy(0, 2, -1);
   printf("=================================================");
-  gotoxy(0, 4);
+  gotoxy(0, 4, -1);
   printf("---=                 Hello                   =---");
-  gotoxy(0, 6);
+  gotoxy(0, 6, -1);
   printf("---=  Please Enter your Vehicle Information  =---");
-  gotoxy(0, 8);
+  gotoxy(0, 8, -1);
   printf("---=           Enter [Q/q] to quit           =---");
-  gotoxy(0, 10);
+  gotoxy(0, 10, -1);
   printf("=================================================\n");
   getchar();
 }

@@ -1,5 +1,5 @@
 #include "VehicleConfiguration.hpp"
-#include "Exceptions.hpp"
+#include "../lib/Exceptions.hpp"
 
 // Path: VehicleConfiguration.cpp
 
@@ -7,6 +7,8 @@ std::string VehicleConfiguration::inputWithPrompt(const std::string &prompt) {
   std::cout << prompt;
   std::string input;
   getline(std::cin, input);
+  if (input == "q" || input == "Q") throw UserQuitException();
+
   return input;
 }
 
