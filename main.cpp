@@ -1,6 +1,7 @@
 #include "./src/Database.hpp"
 #include "./src/Menu.hpp"
 #include "./src/VehicleConfiguration.hpp"
+#include "./lib/header.h"
 
 int main() {
   Menu menu;
@@ -14,7 +15,7 @@ int main() {
 
   switch (choice) {
   case 1:
-    system("clear");
+    clearConsole();
     menu.configCarPrompt();
     vehicleConfig.collectData();
     break;
@@ -23,7 +24,7 @@ int main() {
     break;
   case 3:
     dbController.storeVehicleConfiguration(vehicleConfig.getCarData());
-    system("clear");
+    clearConsole();
     break;
   case 4:
     menu.exit();

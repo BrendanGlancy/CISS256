@@ -3,7 +3,7 @@
 #include "VehicleConfiguration.hpp"
 
 void Menu::welcome() {
-  system("clear");
+  clearConsole();
   gotoxy(0, 0, 36); // Cyan color
   std::cout << "-----------------------------------------------------"
                "------------"
@@ -45,7 +45,7 @@ int Menu::getMenuChoice() {
 }
 
 void Menu::configCarPrompt() {
-  system("clear");
+  clearConsole();
   gotoxy(0, 2, -1);
   printf("=================================================");
   gotoxy(0, 4, -1);
