@@ -1,6 +1,6 @@
-#include "VehicleConfiguration.hpp"
 #include "Database.hpp"
 #include "Menu.hpp"
+#include "VehicleConfiguration.hpp"
 
 int main() {
   // obj init
@@ -14,23 +14,22 @@ int main() {
   int choice = menu.getMenuChoice();
 
   switch (choice) {
-    case 1:
-      vehicleConfig.collectData();
-      break;
-    case 2:
-      menu.exit();
-      break;
-    case 3:
-      dbController.storeVehicleConfiguration(vehicleConfig.getCarData());
-      break;
-    case 4:
-      menu.exit();
-      break;
-    default:
-      std::cout << "Invalid choice" << std::endl;
-      break;
+  case 1:
+    vehicleConfig.collectData();
+    break;
+  case 2:
+    menu.exit();
+    break;
+  case 3:
+    dbController.storeVehicleConfiguration(vehicleConfig.getCarData());
+    break;
+  case 4:
+    menu.exit();
+    break;
+  default:
+    std::cout << "Invalid choice" << std::endl;
+    break;
   }
-
 
   return 0;
 }

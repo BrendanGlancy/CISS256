@@ -1,8 +1,10 @@
 #pragma once
 #include "VehicleConfiguration.hpp"
+#include <sqlite3.h>
 
 class Database {
 public:
-    // Potentially other member functions...
-    void storeVehicleConfiguration(const car& data);
+  void connect();
+  void seedDatabase();
+  void storeVehicleConfiguration(const car &data);
 };
