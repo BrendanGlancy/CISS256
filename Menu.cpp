@@ -1,7 +1,9 @@
+#include "header.h"
 #include "Menu.hpp"
 #include "VehicleConfiguration.hpp"
 
 void Menu::welcome() {
+  system("clear");
   std::cout << "\033[1;36m-----------------------------------------------------"
                "------------"
             << std::endl;
@@ -41,9 +43,19 @@ int Menu::getMenuChoice() {
   return choice;
 }
 
-void Menu::configureMenu() {
-  VehicleConfiguration config;
-  config.setMenuCallback([this] { displayMenu(); });
+void Menu::configCarPrompt() {
+  system("clear");
+  gotoxy(0, 2);
+  printf("=================================================");
+  gotoxy(0, 4);
+  printf("---=                 Hello                   =---");
+  gotoxy(0, 6);
+  printf("---=  Please Enter your Vehicle Information  =---");
+  gotoxy(0, 8);
+  printf("---=           Enter [Q/q] to quit           =---");
+  gotoxy(0, 10);
+  printf("=================================================\n");
+  getchar();
 }
 
 void Menu::exit() {

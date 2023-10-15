@@ -3,7 +3,6 @@
 #include "VehicleConfiguration.hpp"
 
 int main() {
-  // obj init
   Menu menu;
   VehicleConfiguration vehicleConfig;
   Database dbController;
@@ -15,6 +14,8 @@ int main() {
 
   switch (choice) {
   case 1:
+    system("clear");
+    menu.configCarPrompt();
     vehicleConfig.collectData();
     break;
   case 2:
@@ -22,6 +23,7 @@ int main() {
     break;
   case 3:
     dbController.storeVehicleConfiguration(vehicleConfig.getCarData());
+    system("clear");
     break;
   case 4:
     menu.exit();

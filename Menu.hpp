@@ -10,6 +10,7 @@ public:
   void displayMenu();
   void configureMenu();
   int getMenuChoice();
+  void configCarPrompt();
   void exit();
 };
 
