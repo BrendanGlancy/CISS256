@@ -12,7 +12,7 @@ LDFLAGS = -lsqlite3
 TARGET = car_app
 
 # Specify the source files
-SOURCES = VehicleConfiguration.cpp Database.cpp main.cpp Menu.cpp Exceptions.cpp common.c
+SOURCES = src/VehicleConfiguration.cpp src/Database.cpp main.cpp src/Menu.cpp lib/Exceptions.cpp lib/common.c
 
 # Specify the object files
 OBJECTS = $(SOURCES:.cpp=.o)
