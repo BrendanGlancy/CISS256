@@ -59,7 +59,8 @@ dist/
 *.opendb
 
 # Database file (if it's local and shouldn't be shared)
-# database.db
+database.db
+*/database.db
 
 # Mac OS
 .DS_Store
