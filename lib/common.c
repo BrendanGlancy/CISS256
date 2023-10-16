@@ -3,25 +3,23 @@
 
 #include "header.h"
 #include <stdio.h>
-#include <stdlib.h> 
+#include <stdlib.h>
 
 void gotoxy(int x, int y, int color_code) {
-    printf("\033[%d;%dH", y, x);
-    if (color_code != -1) {
-        printf("\033[1;%dm", color_code);
-    }
+  printf("\033[%d;%dH", y, x);
+  if (color_code != -1) {
+    printf("\033[1;%dm", color_code);
+  }
 }
 
-void resetTextColor() {
-    printf("\033[0m");
-}
+void resetTextColor() { printf("\033[0m"); }
 
 void clearConsole() {
 #ifdef _WIN32
-    system("cls");
+  system("cls");
 #else
-    system("clear");
+  system("clear");
 #endif
 }
 
-#endif //COMMON_H
+#endif // COMMON_H

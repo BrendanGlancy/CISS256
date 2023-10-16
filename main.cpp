@@ -13,7 +13,6 @@ int main() {
   dbController.seedDatabase();
   menu.welcome();
 
-
   bool running = true;
   while (running) {
     menu.displayMenu();
