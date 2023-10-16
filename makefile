@@ -26,7 +26,7 @@ all: $(TARGET)
 TEST_SOURCES = tests/run-test.cpp src/Database.cpp
 TEST_C_SOURCES = lib/common.c
 TEST_OBJECTS = $(TEST_SOURCES:.cpp=.o) $(TEST_C_SOURCES:.c=.o)
-TEST_TARGET = tests/run_tests
+TEST_TARGET = run_tests
 
 $(TARGET): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJECTS) $(LDFLAGS)
