@@ -22,4 +22,4 @@ jobs:
 
     # Add your test running steps here if you have tests to run.
     - name: Test
-      run: ../../tests/run_tests
+      run: run_tests
