@@ -66,4 +66,4 @@ dist/
 
 # the built application folder
 car_app
-run_tests
+run-tests
