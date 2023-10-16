@@ -8,10 +8,11 @@ void clearUp() {}
 int main() {
   Menu menu;
   VehicleConfiguration vehicleConfig;
+  Database dbController;
+
+  dbController.seedDatabase();
   menu.welcome();
 
-  Database dbController;
-  dbController.seedDatabase();
 
   bool running = true;
   while (running) {

@@ -1,4 +1,4 @@
-# Specify the compilers
+#Specify the compilers
 CXX = g++
 CC = gcc
 
@@ -23,8 +23,9 @@ OBJECTS = $(CPP_SOURCES:.cpp=.o) $(C_SOURCES:.c=.o)
 all: $(TARGET)
 
 # Test files
-TEST_SOURCES = tests/run-tests.cpp src/Database.cpp
-TEST_OBJECTS = $(TEST_SOURCES:.cpp=.o)
+TEST_SOURCES = tests/run-test.cpp src/Database.cpp
+TEST_C_SOURCES = lib/common.c
+TEST_OBJECTS = $(TEST_SOURCES:.cpp=.o) $(TEST_C_SOURCES:.c=.o)
 TEST_TARGET = run-tests
 
 $(TARGET): $(OBJECTS)
