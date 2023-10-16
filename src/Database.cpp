@@ -41,11 +41,6 @@ void Database::seedDatabase() {
 }
 
 void Database::storeVehicleConfiguration(const car &data) {
-  // Implement the code to store the vehicle configuration data into the
-  // database. You'll need to construct the SQL INSERT statement and execute it
-  // using sqlite3_exec. Be sure to handle any errors that may occur during this
-  // operation. The code here will depend on the structure of your 'car' struct
-  // and how you want to insert the data.
   std::string sql = "INSERT INTO vehicle_configuration (vehicle_id, "
                     "vehicle_dealer, vehicle_memo, vehicle_color, "
                     "vehicle_engine, vehicle_cargoOrPassenger, "
