@@ -51,6 +51,7 @@ std::string VehicleConfiguration::getOptionFromUser(
   }
 }
 
+// TODO, make this a template function price should be a float
 int VehicleConfiguration::getValidatedInput(const std::string &prompt) {
   int value;
   std::string input;
