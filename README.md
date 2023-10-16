@@ -53,7 +53,7 @@ make
 3. Run the application:
 
 ```bash
-./app
+./car_app   
 ```
 
 ## Project Structure
