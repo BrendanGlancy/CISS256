@@ -1,8 +1,10 @@
-# Specify the compiler
+# Specify the compilers
 CXX = g++
+CC = gcc
 
 # Specify compiler flags
 CXXFLAGS = -Wall -std=c++17
+CFLAGS = -Wall
 
 # Specify the linker flags
 # Add `-lsqlite3` to link the SQLite3 library
@@ -11,11 +13,12 @@ LDFLAGS = -lsqlite3
 # Specify the target file
 TARGET = car_app
 
-# Specify the source files
-SOURCES = src/VehicleConfiguration.cpp src/Database.cpp main.cpp src/Menu.cpp lib/Exceptions.cpp lib/common.c
+# Separate C and C++ source files
+CPP_SOURCES = src/VehicleConfiguration.cpp src/Database.cpp main.cpp src/Menu.cpp lib/Exceptions.cpp
+C_SOURCES = lib/common.c
 
-# Specify the object files
-OBJECTS = $(SOURCES:.cpp=.o) $(SOURCES:.c=.o)
+# Generate object files from sources
+OBJECTS = $(CPP_SOURCES:.cpp=.o) $(C_SOURCES:.c=.o)
 
 all: $(TARGET)
 
