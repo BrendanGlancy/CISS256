@@ -2,8 +2,6 @@
 #include "../lib/header.h"
 #include "Database.hpp"
 #include "VehicleConfiguration.hpp"
-#include <chrono>
-#include <thread>
 
 void Menu::welcome() {
   clearConsole();
@@ -35,7 +33,8 @@ void Menu::displayMenu() {
   std::cout << "\033[1;33m>>>> MAIN MENU <<<<\033[0m" << std::endl;
   std::cout << "\033[1;32m1.\033[0m Configure a vehicle" << std::endl;
   std::cout << "\033[1;32m2.\033[0m Save Configured vehicle" << std::endl;
-  std::cout << "\033[1;31m3.\033[0m Exit" << std::endl;
+  std::cout << "\033[1;32m3.\033[0m View Stored Orders" << std::endl;
+  std::cout << "\033[1;31m4.\033[0m Exit" << std::endl;
   std::cout << std::endl;
   std::cout << "\033[1;34mEnter your choice: \033[0m";
 }
@@ -48,15 +47,15 @@ int Menu::getMenuChoice() {
 
 void Menu::configCarPrompt() {
   clearConsole();
-  gotoxy(0, 2, -1);
+  gotoxy(0, 2, 36);
   printf("=================================================");
-  gotoxy(0, 4, -1);
+  gotoxy(0, 4, 36);
   printf("---=                 Hello                   =---");
-  gotoxy(0, 6, -1);
+  gotoxy(0, 6, 36);
   printf("---=  Please Enter your Vehicle Information  =---");
-  gotoxy(0, 8, -1);
+  gotoxy(0, 8, 36);
   printf("---=           Enter [Q/q] to quit           =---");
-  gotoxy(0, 10, -1);
+  gotoxy(0, 10, 36);
   printf("=================================================\n");
   getchar();
 }

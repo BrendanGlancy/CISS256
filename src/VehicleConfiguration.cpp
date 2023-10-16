@@ -7,7 +7,8 @@ std::string VehicleConfiguration::inputWithPrompt(const std::string &prompt) {
   std::cout << prompt;
   std::string input;
   getline(std::cin, input);
-  if (input == "q" || input == "Q") throw UserQuitException();
+  if (input == "q" || input == "Q")
+    throw UserQuitException();
 
   return input;
 }
@@ -50,6 +51,24 @@ std::string VehicleConfiguration::getOptionFromUser(
   }
 }
 
+int VehicleConfiguration::getValidatedInput(const std::string &prompt) {
+  int value;
+  std::string input;
+  while (true) {
+    std::cout << prompt;
+    std::getline(std::cin, input);
+    std::stringstream ss(input);
+    if (ss >> value) {
+      if (ss.eof()) {
+        break;
+      }
+    }
+    std::cout << "Invalid input, please try again." << std::endl;
+  }
+
+  return value;
+}
+
 std::string VehicleConfiguration::setColor() {
   return getOptionFromUser("Color (W)hite, (G)ray, (B)lack: ",
                            {
@@ -75,11 +94,11 @@ std::string VehicleConfiguration::setCargoOrPassenger() {
 }
 
 std::string VehicleConfiguration::setCargoRoofline() {
-  return getOptionFromUser("Cargo Roofline (S)hort, (M)edium, (T)all: ",
+  return getOptionFromUser("Cargo Roofline (L)ow, (R)aised, (H)igh: ",
                            {
-                               {'S', "Short"},
-                               {'M', "Medium"},
-                               {'T', "Tall"},
+                               {'L', "Low"},
+                               {'R', "Raised"},
+                               {'H', "High"},
                            });
 }
 
@@ -92,6 +111,14 @@ std::string VehicleConfiguration::setWheelbase() {
                            });
 }
 
+int VehicleConfiguration::setPrice() {
+  return getValidatedInput("Enter the price of the vehicle(s): ");
+}
+
+int VehicleConfiguration::setYear() {
+  return getValidatedInput("Enter the year of the vehicle(s): ");
+}
+
 // we need to collect the data pass it to our database class to be stored in a
 // database
 void VehicleConfiguration::collectData() {
@@ -101,7 +128,8 @@ void VehicleConfiguration::collectData() {
     carData.quantity = inputQuantity();
     carData.color = setColor();
     carData.evOrIc = setEngineType();
-    setCarData(carData.quantity);
+    carData.price = setPrice();
+    carData.year = setYear();
     if (carData.evOrIc != "EV") {
       carData.cargoOrPassenger = setCargoOrPassenger();
       carData.cargoRoofline = setCargoRoofline();
@@ -116,8 +144,4 @@ void VehicleConfiguration::collectData() {
       menuCallback();
     }
   }
-}
-
-void VehicleConfiguration::setCarData(int quantity) {
-  // TODO
 }

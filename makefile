@@ -15,9 +15,14 @@ TARGET = car_app
 SOURCES = src/VehicleConfiguration.cpp src/Database.cpp main.cpp src/Menu.cpp lib/Exceptions.cpp lib/common.c
 
 # Specify the object files
-OBJECTS = $(SOURCES:.cpp=.o)
+OBJECTS = $(SOURCES:.cpp=.o) $(SOURCES:.c=.o)
 
 all: $(TARGET)
+
+# Test files
+TEST_SOURCES = tests/run-tests.cpp src/Database.cpp
+TEST_OBJECTS = $(TEST_SOURCES:.cpp=.o)
+TEST_TARGET = run-tests
 
 $(TARGET): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJECTS) $(LDFLAGS)
@@ -26,6 +31,16 @@ $(TARGET): $(OBJECTS)
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+# A pattern rule to create ".o" object files from ".c" source files
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(TEST_TARGET): $(TEST_OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $(TEST_TARGET) $(TEST_OBJECTS) $(LDFLAGS)
+
+test: $(TEST_TARGET)
+	./$(TEST_TARGET)
+
 # Add a clean target
 clean:
-	rm -f $(TARGET) $(OBJECTS)
+	rm -f $(TARGET) $(OBJECTS) $(TEST_TARGET) $(TEST_OBJECTS)

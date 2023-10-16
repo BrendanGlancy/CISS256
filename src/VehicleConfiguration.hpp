@@ -13,7 +13,7 @@
 #include <unordered_map> // Added header for unordered_map
 
 struct car {
-  float carID;
+  float id;
   std::string dealerName, memoReference, color, evOrIc, cargoOrPassenger,
       cargoRoofline, wheelbase, make, model;
   int year, quantity, price;
@@ -40,11 +40,12 @@ private:
   std::string setCargoOrPassenger();
   std::string setCargoRoofline();
   std::string setWheelbase();
-  // Added the following method declaration
+  int setYear();
+  int setPrice();
   std::string
   getOptionFromUser(const std::string &prompt,
                     const std::unordered_map<char, std::string> &options);
-  void setCarData(int quantity);
+  int getValidatedInput(const std::string &prompt);
 };
 
 #endif // VEHICLECONFIGURATION_HPP

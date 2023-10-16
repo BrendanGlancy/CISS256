@@ -8,9 +8,10 @@ void clearUp() {}
 int main() {
   Menu menu;
   VehicleConfiguration vehicleConfig;
-  Database dbController;
-
   menu.welcome();
+
+  Database dbController;
+  dbController.seedDatabase();
 
   bool running = true;
   while (running) {
@@ -24,10 +25,13 @@ int main() {
       vehicleConfig.collectData();
       break;
     case 2: // Store data
-      clearConsole();
       dbController.storeVehicleConfiguration(vehicleConfig.getCarData());
       break;
-    case 3: // Exit program
+    case 3: // View data
+      clearConsole();
+      dbController.viewVehicleConfiguration();
+      break;
+    case 4: // Exit program
       menu.exit();
       running = false;
       break;
