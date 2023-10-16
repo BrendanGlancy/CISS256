@@ -1,7 +1,7 @@
 #include "Database.hpp"
 
 Database::Database() {
-  int rc = sqlite3_open("database.db", &db);
+  int rc = sqlite3_open("../docs/database.db", &db);
   if (rc) {
     std::cerr << "Can't open database: " << sqlite3_errmsg(db) << std::endl;
     // You might want to handle this error condition.
