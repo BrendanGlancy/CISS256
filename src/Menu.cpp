@@ -47,17 +47,16 @@ int Menu::getMenuChoice() {
 
 void Menu::configCarPrompt() {
   clearConsole();
-  gotoxy(0, 2, 36);
+  gotoxy(20, 2, 36);
   printf("=================================================");
-  gotoxy(0, 4, 36);
+  gotoxy(20, 4, 36);
   printf("---=                 Hello                   =---");
-  gotoxy(0, 6, 36);
+  gotoxy(20, 6, 36);
   printf("---=  Please Enter your Vehicle Information  =---");
-  gotoxy(0, 8, 36);
+  gotoxy(20, 8, 36);
   printf("---=           Enter [Q/q] to quit           =---");
-  gotoxy(0, 10, 36);
+  gotoxy(20, 10, 36);
   printf("=================================================\n");
-  getchar();
 }
 
 void Menu::exit() {
