@@ -77,3 +77,5 @@ $ git commit -m "A brief summary of the commit
 ## License 
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+<footer>Please don't forget to give my repository a star! ⭐️</footer>
