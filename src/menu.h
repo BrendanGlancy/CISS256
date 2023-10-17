@@ -5,14 +5,14 @@
 extern "C" {
 #endif
 #include <stdio.h>
+#include <string.h>
 #include "../lib/header.h"
 
 void welcome();
 void displayMenu();
 void configCarPrompt();
-void exitprog();
 int getChoice();
-void infoHeader(int carObjCount);
+void infoHeader(char message[]);
 
 #ifdef __cplusplus
 }

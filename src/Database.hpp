@@ -11,13 +11,15 @@ public:
 
   void connect();
   void seedDatabase();
-  void storeVehicleConfiguration(const car &data);
-  int viewVehicleConfiguration();
+
+  void storeVehicleConfiguration(const car &data); // create
+  int viewVehicleConfiguration(); // read
+  void updateVehicleConfiguration(); // update
+  void deleteVehicleConfiguration(); // delete
 
   // destructor
   ~Database();
 
 private:
   sqlite3 *db;
-  int genID();
 };

@@ -121,4 +121,7 @@ int Database::viewVehicleConfiguration() {
   return 0;
 }
 
+void Database::updateVehicleConfiguration() {}
+void Database::deleteVehicleConfiguration() {}
+
 Database::~Database() { sqlite3_close(db); }

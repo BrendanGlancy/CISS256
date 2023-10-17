@@ -32,9 +32,13 @@ void displayMenu() {
   printf("2. Save Configured vehicle");
   gotoxy(16, 15, 32);
   printf("3. View Stored Orders");
-  gotoxy(16, 16, 31);
-  printf("4. Exit");
-  gotoxy(16, 18, 34);
+  gotoxy(16, 16, 32);
+  printf("4. Update an Order");
+  gotoxy(16, 17, 32);
+  printf("5. Delete an Order");
+  gotoxy(16, 18, 31);
+  printf("6. Exit");
+  gotoxy(16, 20, 34);
   printf("Enter your choice: ");
 }
 
@@ -52,21 +56,11 @@ void configCarPrompt() {
   printf("=================================================\n");
 }
 
-void exitprog() {
-  clearConsole();
-  gotoxy(10, 9, 31);
-  printf("Exiting...");
-  gotoxy(0, 11, 36);
-  printf("-----------------------------------------------------"
-         "------------");
-  clearConsole();
-}
-
 int getChoice() {
   int choice;
   while (1) {
     scanf("%d", &choice);
-    if (choice < 1 || choice > 4) {
+    if (choice < 1 || choice > 6) {
       gotoxy(5, 19, 31);
       printf("Invalid choice, please try again: ");
     } else {
@@ -76,14 +70,15 @@ int getChoice() {
   return choice;
 }
 
-void infoHeader(int carObjCount) {
+// make more dynamic
+void infoHeader(char *message) {
   clearConsole();
   gotoxy(4, 1, 36);
   printf("=================================================");
   gotoxy(4, 3, 36);
   printf("---=                 Hello                   =---");
   gotoxy(4, 5, 36);
-  printf("---=      You've created %d car objects       =---", carObjCount);
+  printf("---=         %s         =---", message);
   gotoxy(4, 7, 36);
   printf("---=            Enter [3] to save            =---");
   gotoxy(4, 9, 36);
