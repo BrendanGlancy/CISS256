@@ -9,6 +9,7 @@ extern "C" {
 void gotoxy(int x, int y, int color_code);
 void resetTextColor();
 void clearConsole();
+void clearInputBuffer();
 
 #ifdef __cplusplus
 }

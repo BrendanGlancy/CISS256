@@ -9,11 +9,12 @@ int main() {
 
   dbController.seedDatabase();
   welcome();
-  int count;
+  int count = 0;
+  int carObjCount = 0;
 
   bool running = true;
   while (running) {
-    if (count > 0) welcome();
+    if (count > 0) infoHeader(carObjCount);
     displayMenu();
 
     int choice = getChoice();
@@ -21,6 +22,7 @@ int main() {
 
     switch (choice) {
     case 1: // Collect data
+      carObjCount++;
       clearConsole();
       configCarPrompt();
       vehicleConfig.collectData();

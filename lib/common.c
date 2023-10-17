@@ -14,6 +14,12 @@ void gotoxy(int x, int y, int color_code) {
 
 void resetTextColor() { printf("\033[0m"); }
 
+void clearInputBuffer() {
+  int c;
+  while ((c = getchar()) != '\n' && c != EOF)
+    ;
+}
+
 void clearConsole() {
 #ifdef _WIN32
   system("cls");

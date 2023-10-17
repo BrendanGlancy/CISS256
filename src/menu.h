@@ -12,6 +12,7 @@ void displayMenu();
 void configCarPrompt();
 void exitprog();
 int getChoice();
+void infoHeader(int carObjCount);
 
 #ifdef __cplusplus
 }

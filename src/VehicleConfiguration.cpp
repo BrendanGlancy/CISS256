@@ -3,13 +3,16 @@
 
 // Path: VehicleConfiguration.cpp
 
-std::string VehicleConfiguration::inputWithPrompt(const std::string &prompt) {
+std::string VehicleConfiguration::inputWithPrompt(const std::string &prompt,
+                                                  bool clear) {
   std::cout << prompt;
   std::string input;
   getline(std::cin, input);
   if (input == "q" || input == "Q")
     throw UserQuitException();
 
+  if (clear)
+    clearInputBuffer();
   return input;
 }
 
@@ -17,7 +20,7 @@ int VehicleConfiguration::inputQuantity() {
   std::string input;
   int quantity;
   while (true) {
-    input = inputWithPrompt("Enter the quantity of vehicles: ");
+    input = inputWithPrompt("Enter the quantity of vehicles: ", false);
     std::stringstream ss(input);
     if (ss >> quantity) {
       if (ss.eof()) {
@@ -34,7 +37,7 @@ std::string VehicleConfiguration::getOptionFromUser(
     const std::unordered_map<char, std::string> &options) {
 
   while (true) {
-    char choice = toupper(inputWithPrompt(prompt)[0]);
+    char choice = toupper(inputWithPrompt(prompt, false)[0]);
 
     // Check if user wants to quit.
     if (choice == 'Q') {
@@ -120,17 +123,55 @@ int VehicleConfiguration::setYear() {
   return getValidatedInput("Enter the year of the vehicle(s): ");
 }
 
+std::string VehicleConfiguration::setMake() {
+  return getOptionFromUser("Make (T)oyota, (H)onda, (F)ord: ",
+                           {
+                               {'T', "Toyota"},
+                               {'H', "Honda"},
+                               {'F', "Ford"},
+                           });
+}
+
+std::string VehicleConfiguration::setModel(std::string make) {
+  if (make == "Toyota") {
+    return getOptionFromUser("Model (C)amry, (R)av4, (P)rius: ",
+                             {
+                                 {'C', "Camry"},
+                                 {'R', "Rav4"},
+                                 {'P', "Prius"},
+                             });
+  } else if (make == "Honda") {
+    return getOptionFromUser("Model (A)ccord, (C)ivic, (C)rv: ",
+                             {
+                                 {'A', "Accord"},
+                                 {'C', "Civic"},
+                                 {'R', "Crv"},
+                             });
+  } else if (make == "Ford") {
+    return getOptionFromUser("Model (F)150, (M)ustang, (E)scape: ",
+                             {
+                                 {'F', "F150"},
+                                 {'M', "Mustang"},
+                                 {'E', "Escape"},
+                             });
+  } else {
+    return "Invalid make";
+  }
+}
+
 // we need to collect the data pass it to our database class to be stored in a
 // database
 void VehicleConfiguration::collectData() {
   try {
-    carData.dealerName = inputWithPrompt("Dealer Name: ");
-    carData.memoReference = inputWithPrompt("Memo Reference: ");
+    carData.dealerName = inputWithPrompt("Dealer Name: ", true);
+    carData.memoReference = inputWithPrompt("Memo Reference: ", false);
     carData.quantity = inputQuantity();
     carData.color = setColor();
     carData.evOrIc = setEngineType();
     carData.price = setPrice();
     carData.year = setYear();
+    carData.make = setMake();
+    carData.model = setModel(carData.make);
     if (carData.evOrIc != "EV") {
       carData.cargoOrPassenger = setCargoOrPassenger();
       carData.cargoRoofline = setCargoRoofline();

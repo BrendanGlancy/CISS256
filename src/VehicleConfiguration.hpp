@@ -1,6 +1,7 @@
 #ifndef VEHICLECONFIGURATION_HPP
 #define VEHICLECONFIGURATION_HPP
 
+#include "../lib/header.h"
 #include <algorithm>
 #include <cctype>
 #include <fstream>
@@ -16,7 +17,7 @@ struct car {
   float id;
   std::string dealerName, memoReference, color, evOrIc, cargoOrPassenger,
       cargoRoofline, wheelbase, make, model;
-  int year, quantity, price;
+  int year, quantity, price = 0;
 };
 
 class VehicleConfiguration {
@@ -33,7 +34,7 @@ private:
   car carData;
   Callback menuCallback;
   void welcomeMessage();
-  std::string inputWithPrompt(const std::string &prompt);
+  std::string inputWithPrompt(const std::string &prompt, bool clear);
   int inputQuantity();
   std::string setColor(); // Removed parameter
   std::string setEngineType();
@@ -42,6 +43,8 @@ private:
   std::string setWheelbase();
   int setYear();
   int setPrice();
+  std::string setMake();
+  std::string setModel(std::string make);
   std::string
   getOptionFromUser(const std::string &prompt,
                     const std::unordered_map<char, std::string> &options);

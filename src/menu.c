@@ -4,40 +4,37 @@
 
 void welcome() {
   clearConsole();
-  gotoxy(5, 0, 36);
-  printf("-----------------------------------------------------"
-         "------------");
-  gotoxy(5, 2, 36);
+  gotoxy(0, 0, 34);
+  printf("=========================================================");
+  gotoxy(2, 2, 36);
   printf(" __          __    _                               _ ");
-  gotoxy(5, 3, 36);
+  gotoxy(2, 3, 36);
   printf(" \\ \\        / /   | |                             | |");
-  gotoxy(5, 4, 36);
+  gotoxy(2, 4, 36);
   printf("  \\ \\  /\\  / /___ | |  ___  ___   _ __ ___    ___ | |");
-  gotoxy(5, 5, 36);
+  gotoxy(2, 5, 36);
   printf("   \\ \\/  \\/ // _ \\| | / __|/ _ \\ | '_ ` _ \\  / _ \\| |");
-  gotoxy(5, 6, 36);
+  gotoxy(2, 6, 36);
   printf("    \\  /\\  /|  __/| || (__| (_) || | | | | ||  __/|_|");
-  gotoxy(5, 7, 36);
+  gotoxy(2, 7, 36);
   printf("     \\/  \\/  \\___||_| \\___|\\___/ |_| |_| |_| \\___|(_)");
-  gotoxy(5, 8, 36);
-  printf("                                                     ");
-  gotoxy(5, 9, 36);
-  printf("---------------------------------------------------------------"
-         "--\n");
+  gotoxy(0, 9, 34);
+  printf("========================================================="
+         "\n");
 }
 
 void displayMenu() {
-  gotoxy(5, 11, 33);
+  gotoxy(16, 11, 33);
   printf(">>>> MAIN MENU <<<<");
-  gotoxy(5, 13, 32);
+  gotoxy(16, 13, 32);
   printf("1. Configure a vehicle");
-  gotoxy(5, 14, 32);
+  gotoxy(16, 14, 32);
   printf("2. Save Configured vehicle");
-  gotoxy(5, 15, 32);
+  gotoxy(16, 15, 32);
   printf("3. View Stored Orders");
-  gotoxy(5, 16, 31);
+  gotoxy(16, 16, 31);
   printf("4. Exit");
-  gotoxy(5, 18, 34);
+  gotoxy(16, 18, 34);
   printf("Enter your choice: ");
 }
 
@@ -61,7 +58,7 @@ void exitprog() {
   printf("Exiting...");
   gotoxy(0, 11, 36);
   printf("-----------------------------------------------------"
-               "------------");
+         "------------");
   clearConsole();
 }
 
@@ -77,4 +74,18 @@ int getChoice() {
     }
   }
   return choice;
+}
+
+void infoHeader(int carObjCount) {
+  clearConsole();
+  gotoxy(4, 1, 36);
+  printf("=================================================");
+  gotoxy(4, 3, 36);
+  printf("---=                 Hello                   =---");
+  gotoxy(4, 5, 36);
+  printf("---=      You've created %d car objects       =---", carObjCount);
+  gotoxy(4, 7, 36);
+  printf("---=            Enter [3] to save            =---");
+  gotoxy(4, 9, 36);
+  printf("=================================================\n");
 }
