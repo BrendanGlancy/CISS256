@@ -1,51 +1,47 @@
-#include "Menu.hpp"
+#include "menu.h"
 #include "../lib/header.h"
-#include "Database.hpp"
-#include "VehicleConfiguration.hpp"
+#include <stdio.h>
 
-void Menu::welcome() {
+void welcome() {
   clearConsole();
-  gotoxy(0, 0, 36); // Cyan color
-  std::cout << "-----------------------------------------------------"
-               "------------"
-            << std::endl;
-  std::cout << " __          __    _                               _ "
-            << std::endl;
-  std::cout << " \\ \\        / /   | |                             | |"
-            << std::endl;
-  std::cout << "  \\ \\  /\\  / /___ | |  ___  ___   _ __ ___    ___ | |"
-            << std::endl;
-  std::cout << "   \\ \\/  \\/ // _ \\| | / __|/ _ \\ | '_ ` _ \\  / _ \\| |"
-            << std::endl;
-  std::cout << "    \\  /\\  /|  __/| || (__| (_) || | | | | ||  __/|_|"
-            << std::endl;
-  std::cout << "     \\/  \\/  \\___||_| \\___|\\___/ |_| |_| |_| \\___|(_)"
-            << std::endl;
-  std::cout << "                                                     "
-            << std::endl;
-  std::cout << "---------------------------------------------------------------"
-               "--"
-            << std::endl;
-  std::cout << std::endl;
+  gotoxy(5, 0, 36);
+  printf("-----------------------------------------------------"
+         "------------");
+  gotoxy(5, 2, 36);
+  printf(" __          __    _                               _ ");
+  gotoxy(5, 3, 36);
+  printf(" \\ \\        / /   | |                             | |");
+  gotoxy(5, 4, 36);
+  printf("  \\ \\  /\\  / /___ | |  ___  ___   _ __ ___    ___ | |");
+  gotoxy(5, 5, 36);
+  printf("   \\ \\/  \\/ // _ \\| | / __|/ _ \\ | '_ ` _ \\  / _ \\| |");
+  gotoxy(5, 6, 36);
+  printf("    \\  /\\  /|  __/| || (__| (_) || | | | | ||  __/|_|");
+  gotoxy(5, 7, 36);
+  printf("     \\/  \\/  \\___||_| \\___|\\___/ |_| |_| |_| \\___|(_)");
+  gotoxy(5, 8, 36);
+  printf("                                                     ");
+  gotoxy(5, 9, 36);
+  printf("---------------------------------------------------------------"
+         "--\n");
 }
 
-void Menu::displayMenu() {
-  std::cout << "\033[1;33m>>>> MAIN MENU <<<<\033[0m" << std::endl;
-  std::cout << "\033[1;32m1.\033[0m Configure a vehicle" << std::endl;
-  std::cout << "\033[1;32m2.\033[0m Save Configured vehicle" << std::endl;
-  std::cout << "\033[1;32m3.\033[0m View Stored Orders" << std::endl;
-  std::cout << "\033[1;31m4.\033[0m Exit" << std::endl;
-  std::cout << std::endl;
-  std::cout << "\033[1;34mEnter your choice: \033[0m";
+void displayMenu() {
+  gotoxy(5, 11, 33);
+  printf(">>>> MAIN MENU <<<<");
+  gotoxy(5, 13, 32);
+  printf("1. Configure a vehicle");
+  gotoxy(5, 14, 32);
+  printf("2. Save Configured vehicle");
+  gotoxy(5, 15, 32);
+  printf("3. View Stored Orders");
+  gotoxy(5, 16, 31);
+  printf("4. Exit");
+  gotoxy(5, 18, 34);
+  printf("Enter your choice: ");
 }
 
-int Menu::getMenuChoice() {
-  int choice;
-  std::cin >> choice;
-  return choice;
-}
-
-void Menu::configCarPrompt() {
+void configCarPrompt() {
   clearConsole();
   gotoxy(0, 2, 36);
   printf("=================================================");
@@ -57,14 +53,28 @@ void Menu::configCarPrompt() {
   printf("---=           Enter [Q/q] to quit           =---");
   gotoxy(0, 10, 36);
   printf("=================================================\n");
-  getchar();
 }
 
-void Menu::exit() {
-  std::cout << "\033[1;31mExiting...\033[0m" << std::endl;
-  std::cout << std::endl;
-  std::cout << "\033[1;36m-----------------------------------------------------"
-               "------------\033[0m"
-            << std::endl;
+void exitprog() {
   clearConsole();
+  gotoxy(10, 9, 31);
+  printf("Exiting...");
+  gotoxy(0, 11, 36);
+  printf("-----------------------------------------------------"
+               "------------");
+  clearConsole();
+}
+
+int getChoice() {
+  int choice;
+  while (1) {
+    scanf("%d", &choice);
+    if (choice < 1 || choice > 4) {
+      gotoxy(5, 19, 31);
+      printf("Invalid choice, please try again: ");
+    } else {
+      break;
+    }
+  }
+  return choice;
 }

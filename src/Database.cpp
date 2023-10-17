@@ -84,14 +84,15 @@ void Database::storeVehicleConfiguration(const car &data) {
   }
 }
 
-void Database::viewVehicleConfiguration() {
+int Database::viewVehicleConfiguration() {
   const char *sql = "SELECT * FROM vehicle_configuration;";
   sqlite3_stmt *stmt;
   if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
     while (sqlite3_step(stmt) == SQLITE_ROW) {
-      gotoxy(4, 0, 34);
+      gotoxy(0, 0, -1);
+      printf("============================================\n");
+      gotoxy(0, 3, -1);
       std::cout << "ID: " << sqlite3_column_int(stmt, 0) << std::endl;
-      gotoxy(0, 3, 34);
       std::cout << "Dealer: " << sqlite3_column_text(stmt, 1) << std::endl;
       std::cout << "Memo: " << sqlite3_column_text(stmt, 2) << std::endl;
       std::cout << "Color: " << sqlite3_column_text(stmt, 3) << std::endl;
@@ -106,12 +107,18 @@ void Database::viewVehicleConfiguration() {
       std::cout << "Year: " << sqlite3_column_int(stmt, 10) << std::endl;
       std::cout << "Price: " << sqlite3_column_int(stmt, 11) << std::endl;
       std::cout << std::endl;
+      printf("============================================\n");
     }
     sqlite3_finalize(stmt);
+    gotoxy(8, 17, 34);
+    printf("Press any key to continue...\n");
+    getchar();
+    while ((getchar()) != '\n');
   } else {
     std::cerr << "Error preparing statement: " << sqlite3_errmsg(db)
               << std::endl;
   }
+  return 0;
 }
 
 Database::~Database() { sqlite3_close(db); }

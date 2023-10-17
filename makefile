@@ -14,8 +14,8 @@ LDFLAGS = -lsqlite3
 TARGET = car_app
 
 # Separate C and C++ source files
-CPP_SOURCES = src/VehicleConfiguration.cpp src/Database.cpp main.cpp src/Menu.cpp lib/Exceptions.cpp
-C_SOURCES = lib/common.c
+CPP_SOURCES = src/VehicleConfiguration.cpp src/Database.cpp main.cpp lib/Exceptions.cpp
+C_SOURCES = lib/common.c src/menu.c
 
 # Generate object files from sources
 OBJECTS = $(CPP_SOURCES:.cpp=.o) $(C_SOURCES:.c=.o)
@@ -24,7 +24,7 @@ all: $(TARGET)
 
 # Test files
 TEST_SOURCES = tests/run-test.cpp src/Database.cpp
-TEST_C_SOURCES = lib/common.c
+TEST_C_SOURCES = lib/common.c 
 TEST_OBJECTS = $(TEST_SOURCES:.cpp=.o) $(TEST_C_SOURCES:.c=.o)
 TEST_TARGET = run_tests
 

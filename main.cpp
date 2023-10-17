@@ -1,27 +1,28 @@
 #include "./lib/header.h"
+#include "./src/menu.h"
 #include "./src/Database.hpp"
-#include "./src/Menu.hpp"
 #include "./src/VehicleConfiguration.hpp"
 
-void clearUp() {}
-
 int main() {
-  Menu menu;
   VehicleConfiguration vehicleConfig;
   Database dbController;
 
   dbController.seedDatabase();
-  menu.welcome();
+  welcome();
+  int count;
 
   bool running = true;
   while (running) {
-    menu.displayMenu();
-    int choice = menu.getMenuChoice();
+    if (count > 0) welcome();
+    displayMenu();
+
+    int choice = getChoice();
+    count++;
 
     switch (choice) {
     case 1: // Collect data
       clearConsole();
-      menu.configCarPrompt();
+      configCarPrompt();
       vehicleConfig.collectData();
       break;
     case 2: // Store data
@@ -30,9 +31,10 @@ int main() {
     case 3: // View data
       clearConsole();
       dbController.viewVehicleConfiguration();
+      clearConsole();
       break;
     case 4: // Exit program
-      menu.exit();
+      clearConsole();
       running = false;
       break;
     default:

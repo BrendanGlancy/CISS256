@@ -12,7 +12,7 @@ public:
   void connect();
   void seedDatabase();
   void storeVehicleConfiguration(const car &data);
-  void viewVehicleConfiguration();
+  int viewVehicleConfiguration();
 
   // destructor
   ~Database();
