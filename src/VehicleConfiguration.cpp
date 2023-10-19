@@ -19,14 +19,13 @@ std::string VehicleConfiguration::inputWithPrompt(const std::string &prompt,
 int VehicleConfiguration::inputQuantity() {
   std::string input;
   int quantity;
+
   while (true) {
     input = inputWithPrompt("Enter the quantity of vehicles: ", false);
     std::stringstream ss(input);
-    if (ss >> quantity) {
-      if (ss.eof()) {
-        break;
-      }
-    }
+    if (ss >> quantity && ss.eof())
+      break;
+
     std::cout << "Invalid input, please try again." << std::endl;
   }
   return quantity;
@@ -40,9 +39,8 @@ std::string VehicleConfiguration::getOptionFromUser(
     char choice = toupper(inputWithPrompt(prompt, false)[0]);
 
     // Check if user wants to quit.
-    if (choice == 'Q') {
+    if (choice == 'Q')
       throw UserQuitException();
-    }
 
     // Check if choice is valid.
     auto found = options.find(choice);
@@ -62,10 +60,8 @@ int VehicleConfiguration::getValidatedInput(const std::string &prompt) {
     std::cout << prompt;
     std::getline(std::cin, input);
     std::stringstream ss(input);
-    if (ss >> value) {
-      if (ss.eof()) {
-        break;
-      }
+    if (ss >> value && ss.eof()) {
+      break;
     }
     std::cout << "Invalid input, please try again." << std::endl;
   }
@@ -141,11 +137,11 @@ std::string VehicleConfiguration::setModel(std::string make) {
                                  {'P', "Prius"},
                              });
   } else if (make == "Honda") {
-    return getOptionFromUser("Model (A)ccord, (C)ivic, (C)rv: ",
+    return getOptionFromUser("Model (A)ccord, (C)ivic, CR-(V): ",
                              {
                                  {'A', "Accord"},
                                  {'C', "Civic"},
-                                 {'R', "Crv"},
+                                 {'V', "Crv"},
                              });
   } else if (make == "Ford") {
     return getOptionFromUser("Model (F)150, (M)ustang, (E)scape: ",
@@ -172,18 +168,25 @@ void VehicleConfiguration::collectData() {
     carData.year = setYear();
     carData.make = setMake();
     carData.model = setModel(carData.make);
-    if (carData.evOrIc != "EV") {
-      carData.cargoOrPassenger = setCargoOrPassenger();
-      carData.cargoRoofline = setCargoRoofline();
-      carData.wheelbase = setWheelbase();
-    } else if (carData.evOrIc == "EV") {
+    if (carData.evOrIc == "EV") {
       carData.cargoOrPassenger = "Cargo";
       carData.cargoRoofline = "Medium";
       carData.wheelbase = "Medium";
-    }
-  } catch (const UserQuitException &) {
+    } 
+    carData.cargoOrPassenger = setCargoOrPassenger();
+    carData.cargoRoofline = setCargoRoofline();
+    carData.wheelbase = setWheelbase();
+  } catch (const std::exception &e) {
     if (menuCallback) {
       menuCallback();
     }
   }
 }
+
+void VehicleConfiguration::reset() {
+  // clear the car object
+  carData = {};
+  clearInputBuffer();
+}
+
+// we need to destruct the car object 

@@ -9,6 +9,7 @@ int main() {
 
   dbController.seedDatabase();
   welcome();
+
   int count = 0;
   int carObjCount = 0;
   char *message = (char*)malloc(50);

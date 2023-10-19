@@ -16,7 +16,7 @@
 struct car {
   float id;
   std::string dealerName, memoReference, color, evOrIc, cargoOrPassenger,
-      cargoRoofline, wheelbase, make, model;
+      cargoRoofline, wheelbase, make, model = "";
   int year, quantity, price = 0;
 };
 

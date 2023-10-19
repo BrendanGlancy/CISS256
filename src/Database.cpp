@@ -89,9 +89,7 @@ int Database::viewVehicleConfiguration() {
   sqlite3_stmt *stmt;
   if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
     while (sqlite3_step(stmt) == SQLITE_ROW) {
-      gotoxy(0, 0, -1);
       printf("============================================\n");
-      gotoxy(0, 3, -1);
       std::cout << "ID: " << sqlite3_column_int(stmt, 0) << std::endl;
       std::cout << "Dealer: " << sqlite3_column_text(stmt, 1) << std::endl;
       std::cout << "Memo: " << sqlite3_column_text(stmt, 2) << std::endl;
@@ -110,8 +108,7 @@ int Database::viewVehicleConfiguration() {
       printf("============================================\n");
     }
     sqlite3_finalize(stmt);
-    gotoxy(8, 17, 34);
-    printf("Press any key to continue...\n");
+    std::cout << "Press any key to continue...";
     getchar();
     while ((getchar()) != '\n');
   } else {
