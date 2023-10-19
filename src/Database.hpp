@@ -1,8 +1,8 @@
 #pragma once
-#include "VehicleConfiguration.hpp"
 #include "../lib/header.h"
-#include <sqlite3.h>
+#include "VehicleConfiguration.hpp"
 #include <filesystem>
+#include <sqlite3.h>
 
 class Database {
 public:
@@ -10,16 +10,20 @@ public:
   Database();
 
   void connect();
-  void seedDatabase();
+  void seed_db();
 
-  void storeVehicleConfiguration(const car &data); // create
-  int viewVehicleConfiguration(); // read
-  void updateVehicleConfiguration(); // update
-  void deleteVehicleConfiguration(); // delete
+  void insert_db(const car &data); // create
+  void query_all();                  
+  void update_db();               // update
+  void delete_db();               // delete
+  
+  int get_id();
 
   // destructor
   ~Database();
 
 private:
   sqlite3 *db;
+  void display_db(sqlite3_stmt *stmt);  
+  void sql_error(sqlite3_stmt *stmt, std::string msg);
 };

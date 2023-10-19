@@ -7,7 +7,7 @@ int main() {
   VehicleConfiguration vehicleConfig;
   Database dbController;
 
-  dbController.seedDatabase();
+  dbController.seed_db();
   welcome();
 
   int count = 0;
@@ -31,20 +31,23 @@ int main() {
       vehicleConfig.collectData();
       break;
     case 2: // Store data
-      dbController.storeVehicleConfiguration(vehicleConfig.getCarData());
+      dbController.insert_db(vehicleConfig.getCarData());
       strcpy(message, "   Save data success   ");
       break;
     case 3: // View data
       clearConsole();
-      dbController.viewVehicleConfiguration();
+      dbController.query_all();
       strcpy(message, "   View data success   ");
       clearConsole();
       break;
-    case 4:
+    case 4: // Update data
       strcpy(message, "  Not yet implemented  ");
       break;
-    case 5:
-      strcpy(message, "  Not yet implemented  ");
+    case 5: // Delete data
+      clearConsole();
+      dbController.query_all();
+      dbController.delete_db();
+      strcpy(message, "  Delete data success  ");
       break;
     case 6: // Exit program
       clearConsole();
