@@ -45,6 +45,7 @@ void Database::insert_db(const car &data) {
                     "?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
   sqlite3_stmt *stmt;
+
   if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
     sqlite3_bind_text(stmt, 1, data.dealerName.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 2, data.memoReference.c_str(), -1,
@@ -79,9 +80,11 @@ void Database::query_all() {
   if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
     display_db(stmt);
     sqlite3_finalize(stmt);
-    std::cout << "Press any key to continue...";
-    getchar();
+
     clearInputBuffer();
+
+    std::cout << "Press [enter] to continue...";
+    getchar();
   } else
     std::cerr << "Error preparing statement: " << sqlite3_errmsg(db)
               << std::endl;

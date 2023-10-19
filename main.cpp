@@ -1,55 +1,74 @@
 #include "./lib/header.h"
-#include "./src/menu.h"
 #include "./src/Database.hpp"
 #include "./src/VehicleConfiguration.hpp"
+#include "./src/menu.h"
+
+void handleCollectData(VehicleConfiguration &vehicleConfig, char *message,
+                       int &carObjCount) {
+  carObjCount++;
+  clearConsole();
+  sprintf(message, "%d car object(s) created", carObjCount);
+  configCarPrompt();
+  vehicleConfig.collectData();
+}
+
+void handleStoreData(Database &dbController,
+                     VehicleConfiguration &vehicleConfig, char *message) {
+  dbController.insert_db(vehicleConfig.getCarData());
+  strcpy(message, "   Save data success   ");
+}
+
+void handleViewData(Database &dbController, char *message) {
+  clearConsole();
+  dbController.query_all();
+  strcpy(message, "   View data success   ");
+  clearConsole();
+}
+
+void handleDeleteData(Database &dbController, char *message) {
+  clearConsole();
+  dbController.query_all();
+  dbController.delete_db();
+  strcpy(message, "  Delete data success  ");
+}
 
 int main() {
+  int count = 0;
+  int carObjCount = 0;
+  char *message = (char *)malloc(50);
+  bool running = true;
+
   VehicleConfiguration vehicleConfig;
   Database dbController;
 
   dbController.seed_db();
   welcome();
 
-  int count = 0;
-  int carObjCount = 0;
-  char *message = (char*)malloc(50);
-
-  bool running = true;
   while (running) {
-    if (count > 0) infoHeader(message);
+    if (count > 0)
+      infoHeader(message);
     displayMenu();
 
     int choice = getChoice();
     count++;
 
     switch (choice) {
-    case 1: // Collect data
-      carObjCount++;
-      clearConsole();
-      sprintf(message, "%d car object(s) created", carObjCount);;
-      configCarPrompt();
-      vehicleConfig.collectData();
+    case 1:
+      handleCollectData(vehicleConfig, message, carObjCount);
       break;
-    case 2: // Store data
-      dbController.insert_db(vehicleConfig.getCarData());
-      strcpy(message, "   Save data success   ");
+    case 2:
+      handleStoreData(dbController, vehicleConfig, message);
       break;
-    case 3: // View data
-      clearConsole();
-      dbController.query_all();
-      strcpy(message, "   View data success   ");
-      clearConsole();
+    case 3:
+      handleViewData(dbController, message);
       break;
-    case 4: // Update data
+    case 4:
       strcpy(message, "  Not yet implemented  ");
       break;
-    case 5: // Delete data
-      clearConsole();
-      dbController.query_all();
-      dbController.delete_db();
-      strcpy(message, "  Delete data success  ");
+    case 5:
+      handleDeleteData(dbController, message);
       break;
-    case 6: // Exit program
+    case 6:
       clearConsole();
       running = false;
       break;
