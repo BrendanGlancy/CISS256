@@ -1,4 +1,5 @@
 #include "Database.hpp"
+#include <functional>
 
 Database::Database() {
   int rc = sqlite3_open("./docs/database.db", &db);
@@ -23,53 +24,65 @@ void Database::seed_db() {
                           "vehicle_year INTEGER NOT NULL,"
                           "vehicle_price INTEGER NOT NULL);";
 
+  execute_sql(sql, "Error creating vehicle_configuration table: ");
+}
+
+bool Database::prepare_stmt(const char *sql, sqlite3_stmt **stmt) {
+  if (sqlite3_prepare_v2(db, sql, -1, stmt, NULL) != SQLITE_OK) {
+    std::cerr << "Error preparing statement: " << sqlite3_errmsg(db)
+              << std::endl;
+    return false;
+  }
+  return true;
+}
+
+void Database::bind_stmt(sqlite3_stmt *stmt, const car &data) {
+  sqlite3_bind_text(stmt, 1, data.dealerName.c_str(), -1, SQLITE_TRANSIENT);
+  sqlite3_bind_text(stmt, 2, data.memoReference.c_str(), -1, SQLITE_TRANSIENT);
+  sqlite3_bind_text(stmt, 3, data.color.c_str(), -1, SQLITE_TRANSIENT);
+  sqlite3_bind_text(stmt, 4, data.evOrIc.c_str(), -1, SQLITE_TRANSIENT);
+  sqlite3_bind_text(stmt, 5, data.cargoOrPassenger.c_str(), -1,
+                    SQLITE_TRANSIENT);
+  sqlite3_bind_text(stmt, 6, data.cargoRoofline.c_str(), -1, SQLITE_TRANSIENT);
+  sqlite3_bind_text(stmt, 7, data.wheelbase.c_str(), -1, SQLITE_TRANSIENT);
+  sqlite3_bind_text(stmt, 8, data.make.c_str(), -1, SQLITE_TRANSIENT);
+  sqlite3_bind_text(stmt, 9, data.model.c_str(), -1, SQLITE_TRANSIENT);
+  sqlite3_bind_int(stmt, 10, data.year);
+  sqlite3_bind_int(stmt, 11, data.price);
+}
+
+void Database::execute_sql(const std::string &sql, const std::string &msg) {
   char *errMsg = nullptr;
   int rc = sqlite3_exec(db, sql.c_str(), NULL, NULL, &errMsg);
+
   if (rc != SQLITE_OK) {
-    std::cerr << "Error creating vehicle_configuration table: " << errMsg
-              << std::endl;
+    std::cerr << msg << errMsg << std::endl;
     sqlite3_free(errMsg);
     // You might want to handle this error condition.
   } else {
-    std::cout << "Created vehicle_configuration table successfully"
-              << std::endl;
+    std::cout << "Operation success" << std::endl;
   }
 }
 
 void Database::insert_db(const car &data) {
   const char *sql = "INSERT INTO vehicle_configuration ("
-                    "vehicle_dealer, vehicle_memo, vehicle_color, "
-                    "vehicle_engine, vehicle_cargoOrPassenger, "
-                    "vehicle_cargoRoofline, vehicle_wheelbase, vehicle_make, "
-                    "vehicle_model, vehicle_year, vehicle_price) VALUES (?, ?, "
-                    "?, ?, ?, ?, ?, ?, ?, ?, ?);";
-
+                    "vehicle_dealer,"
+                    "vehicle_memo,"
+                    "vehicle_color,"
+                    "vehicle_engine,"
+                    "vehicle_cargoOrPassenger,"
+                    "vehicle_cargoRoofline,"
+                    "vehicle_wheelbase,"
+                    "vehicle_make,"
+                    "vehicle_model,"
+                    "vehicle_year,"
+                    "vehicle_price) "
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
   sqlite3_stmt *stmt;
 
-  if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
-    sqlite3_bind_text(stmt, 1, data.dealerName.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 2, data.memoReference.c_str(), -1,
-                      SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 3, data.color.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 4, data.evOrIc.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 5, data.cargoOrPassenger.c_str(), -1,
-                      SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 6, data.cargoRoofline.c_str(), -1,
-                      SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 7, data.wheelbase.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 8, data.make.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 9, data.model.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt, 10, data.year);
-    sqlite3_bind_int(stmt, 11, data.price);
-
+  if (prepare_stmt(sql, &stmt)) {
+    bind_stmt(stmt, data);
     sql_error(stmt, "Error inserting vehicle_configuration data: ");
-
-    std::cout << "Inserted vehicle_configuration data successfully"
-              << std::endl;
-    sqlite3_finalize(stmt);
-  } else {
-    std::cerr << "Error preparing statement: " << sqlite3_errmsg(db)
-              << std::endl;
   }
 }
 
@@ -132,15 +145,9 @@ void Database::delete_db() {
   const char *sql = "DELETE FROM vehicle_configuration WHERE id = ?;";
   sqlite3_stmt *stmt;
 
-  if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+  if (prepare_stmt(sql, &stmt)) {
     sqlite3_bind_int(stmt, 1, delete_id);
-    sql_error(stmt, "Error deleting vehicle_configuration data: ");
-
-    std::cout << "Deleted vehicle_configuration data successfully" << std::endl;
-    sqlite3_finalize(stmt);
-  } else {
-    std::cerr << "Error preparing statement: " << sqlite3_errmsg(db)
-              << std::endl;
+    sql_error(stmt, "Error inserting vehicle_configuration data: ");
   }
 }
 
