@@ -182,11 +182,3 @@ void VehicleConfiguration::collectData() {
     }
   }
 }
-
-void VehicleConfiguration::reset() {
-  // clear the car object
-  carData = {};
-  clearInputBuffer();
-}
-
-// we need to destruct the car object 
