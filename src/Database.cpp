@@ -151,4 +151,36 @@ void Database::delete_db() {
   }
 }
 
+
+// testing
+bool Database::table_exists(const std::string &table_name) {
+  const std::string sql = "SELECT name FROM sqlite_master WHERE type='table' AND name='" + table_name + "';";
+  sqlite3_stmt *stmt;
+
+  if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL) == SQLITE_OK) {
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
+
+bool Database::column_exists(const std::string &table_name, const std::string &column_name) {
+  const std::string sql = "SELECT " + column_name + " FROM " + table_name + ";";
+  sqlite3_stmt *stmt;
+
+  if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL) == SQLITE_OK) {
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
+
 Database::~Database() { sqlite3_close(db); }

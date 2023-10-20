@@ -15,6 +15,12 @@ public:
   void query_all(); // read 
   void update_db(); // update
   void delete_db(); // delete
+  
+  // testing 
+  bool table_exists(const std::string &table_name);
+  bool column_exists(const std::string &table_name, const std::string &column_name);
+
+
 
   // destructor
   ~Database();
