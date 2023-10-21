@@ -5,14 +5,15 @@
 
 std::string VehicleConfiguration::inputWithPrompt(const std::string &prompt,
                                                   bool clear) {
+  if (clear)
+    clearInputBuffer();
+
   std::cout << prompt;
   std::string input;
   getline(std::cin, input);
   if (input == "q" || input == "Q")
     throw UserQuitException();
 
-  if (clear)
-    clearInputBuffer();
   return input;
 }
 
@@ -159,8 +160,10 @@ std::string VehicleConfiguration::setModel(std::string make) {
 // database
 void VehicleConfiguration::collectData() {
   try {
-    carData.dealerName = inputWithPrompt("Dealer Name: ", true);
-    carData.memoReference = inputWithPrompt("Memo Reference: ", false);
+    carData.dealerName =
+        VehicleConfiguration::inputWithPrompt("Dealer Name: ", true);
+    carData.memoReference =
+        VehicleConfiguration::inputWithPrompt("Memo Reference: ", false);
     carData.quantity = inputQuantity();
     carData.color = setColor();
     carData.evOrIc = setEngineType();
@@ -172,7 +175,7 @@ void VehicleConfiguration::collectData() {
       carData.cargoOrPassenger = "Cargo";
       carData.cargoRoofline = "Medium";
       carData.wheelbase = "Medium";
-    } 
+    }
     carData.cargoOrPassenger = setCargoOrPassenger();
     carData.cargoRoofline = setCargoRoofline();
     carData.wheelbase = setWheelbase();

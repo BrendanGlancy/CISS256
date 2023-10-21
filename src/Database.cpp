@@ -131,10 +131,12 @@ void Database::sql_error(sqlite3_stmt *stmt, std::string msg) {
   }
 }
 
+// TODO
 int Database::get_id() {
   int id;
   std::cout << "Enter ID of the table you want to Modify: ";
-  std::cin >> id;
+  std::cin >> id; // if the user enters a q/Q then we should return the user to
+                  // the main menu
   return id;
 }
 
