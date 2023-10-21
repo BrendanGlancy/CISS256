@@ -32,6 +32,13 @@ void handleDeleteData(Database &dbController, char *message) {
   strcpy(message, "  Delete data success  ");
 }
 
+void handleUpdateData(Database &dbController, char *message) {
+  clearConsole();
+  dbController.query_all();
+  dbController.update_db();
+  strcpy(message, "  Update data success  ");
+}
+
 int main() {
   int count = 0;
   int carObjCount = 0;
@@ -63,7 +70,7 @@ int main() {
       handleViewData(dbController, message);
       break;
     case 4:
-      strcpy(message, "  Not yet implemented  ");
+      handleUpdateData(dbController, message);
       break;
     case 5:
       handleDeleteData(dbController, message);

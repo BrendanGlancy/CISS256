@@ -138,7 +138,53 @@ int Database::get_id() {
   return id;
 }
 
-void Database::update_db() { int update_id = get_id(); }
+void Database::update_db() {
+  int update_id = get_id();
+
+  std::string sql = col_choice();
+  clearInputBuffer();
+  std::string update = get_update();
+  sqlite3_stmt *stmt;
+
+  if (prepare_stmt(sql.c_str(), &stmt)) {
+    sqlite3_bind_text(stmt, 1, update.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 2, update_id);
+    sql_error(stmt, "Error inserting vehicle_configuration data: ");
+  }
+}
+
+std::string Database::col_choice() {
+  std::unordered_map<char, std::string> columns = {
+      {'d', "vehicle_dealer"},
+      {'m', "vehicle_memo"},
+      {'c', "vehicle_color"},
+      {'e', "vehicle_engine"},
+      {'c', "vehicle_cargoOrPassenger"},
+      {'r', "vehicle_cargoRoofline"},
+      {'w', "vehicle_wheelbase"},
+      {'!', "vehicle_make"},
+      {'#', "vehicle_model"},
+      {'y', "vehicle_year"},
+      {'p', "vehicle_price"}};
+
+  std::cout
+      << "Which column would you like to update? (d) Dealer, (m) Memo, (c) "
+         "Color, (e) Engine, (c) Cargo or Passenger, (r) Cargo Roofline, (w) "
+         "Wheelbase, (!) Make, (#) Model, (y) Year, (p) Price: ";
+  char column;
+  std::cin >> column;
+
+  std::string sql = "UPDATE vehicle_configuration SET " + columns[column] +
+                    " = ? WHERE id = ?;";
+  return sql;
+}
+
+std::string Database::get_update() {
+  std::string update;
+  std::cout << "What would you like to update it to? ";
+  std::getline(std::cin, update);
+  return update;
+}
 
 void Database::delete_db() {
   int delete_id = get_id();
@@ -151,10 +197,11 @@ void Database::delete_db() {
   }
 }
 
-
 // testing
 bool Database::table_exists(const std::string &table_name) {
-  const std::string sql = "SELECT name FROM sqlite_master WHERE type='table' AND name='" + table_name + "';";
+  const std::string sql =
+      "SELECT name FROM sqlite_master WHERE type='table' AND name='" +
+      table_name + "';";
   sqlite3_stmt *stmt;
 
   if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL) == SQLITE_OK) {
@@ -168,7 +215,8 @@ bool Database::table_exists(const std::string &table_name) {
   }
 }
 
-bool Database::column_exists(const std::string &table_name, const std::string &column_name) {
+bool Database::column_exists(const std::string &table_name,
+                             const std::string &column_name) {
   const std::string sql = "SELECT " + column_name + " FROM " + table_name + ";";
   sqlite3_stmt *stmt;
 
