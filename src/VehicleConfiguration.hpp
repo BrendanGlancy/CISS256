@@ -1,13 +1,10 @@
+#pragma once
+
 #ifndef VEHICLECONFIGURATION_HPP
 #define VEHICLECONFIGURATION_HPP
 
 #include "../lib/header.h"
-#include <algorithm>
-#include <cctype>
-#include <fstream>
-#include <functional> // Added header for std::function
 #include <iostream>
-#include <limits>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -15,8 +12,10 @@
 
 struct car {
   float id;
+
   std::string dealerName, memoReference, color, evOrIc, cargoOrPassenger,
       cargoRoofline, wheelbase, make, model = "";
+
   int year, quantity, price = 0;
 };
 
@@ -31,11 +30,14 @@ public:
   car getCarData() const { return carData; }
 
 private:
+  // declare the carData struct as a pointer
   car carData;
+
   Callback menuCallback;
+  int inputQuantity();
+
   void welcomeMessage();
   std::string inputWithPrompt(const std::string &prompt, bool clear);
-  int inputQuantity();
   std::string setColor(); // Removed parameter
   std::string setEngineType();
   std::string setCargoOrPassenger();

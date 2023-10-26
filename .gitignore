@@ -60,7 +60,6 @@ dist/
 
 # Database file (if it's local and shouldn't be shared)
 database.db
-docs/database.db
 
 # Mac OS
 .DS_Store

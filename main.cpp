@@ -2,20 +2,31 @@
 #include "./src/Database.hpp"
 #include "./src/VehicleConfiguration.hpp"
 #include "./src/menu.h"
+#include <vector>
 
-void handleCollectData(VehicleConfiguration &vehicleConfig, char *message,
-                       int &carObjCount) {
+void handleCollectData(std::vector<VehicleConfiguration *> vehicleConfigs,
+                       char *message, int &carObjCount) {
+  vehicleConfigs.push_back(new VehicleConfiguration());
   carObjCount++;
   clearConsole();
   sprintf(message, "%d car object(s) created", carObjCount);
   configCarPrompt();
-  vehicleConfig.collectData();
+  vehicleConfigs.back()->collectData();
 }
 
 void handleStoreData(Database &dbController,
-                     VehicleConfiguration &vehicleConfig, char *message) {
-  dbController.insert_db(vehicleConfig.getCarData());
-  strcpy(message, "   Save data success   ");
+                     std::vector<VehicleConfiguration *> vehicleConfigs,
+                     char *message) {
+  if (vehicleConfigs.empty()) {
+    strcpy(message, "   No data to save   ");
+    return;
+  }
+    dbController.insert_db(vehicleConfigs.back()->getCarData());
+
+    delete vehicleConfigs.back();  
+    vehicleConfigs.pop_back();
+    
+    strcpy(message, "   Save data success   ");
 }
 
 void handleViewData(Database &dbController, char *message) {
@@ -42,10 +53,11 @@ void handleUpdateData(Database &dbController, char *message) {
 int main() {
   int count = 0;
   int carObjCount = 0;
-  char *message = (char *)malloc(50);
+  char *message = (char *)malloc(sizeof("  Delete data success  ") + 2);
+
   bool running = true;
 
-  VehicleConfiguration vehicleConfig;
+  std::vector<VehicleConfiguration *> vehicleConfigs;
   Database dbController;
 
   dbController.seed_db();
@@ -61,10 +73,10 @@ int main() {
 
     switch (choice) {
     case 1:
-      handleCollectData(vehicleConfig, message, carObjCount);
+      handleCollectData(vehicleConfigs, message, carObjCount);
       break;
     case 2:
-      handleStoreData(dbController, vehicleConfig, message);
+      handleStoreData(dbController, vehicleConfigs, message);
       break;
     case 3:
       handleViewData(dbController, message);

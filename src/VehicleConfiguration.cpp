@@ -1,3 +1,31 @@
+/**
+  * Final Requirement for Second Deliverable
+  * - Declare the struct early in the file;
+  *   intstantiate it by active name in main
+  * - Refer to it by active name throughout the functions
+  *
+  * Coverage
+  * - Continguous array (fixed size) which are part of std
+  * - Continguous pointers
+  * - Linked List, basis for object
+  *
+  * - Now: turn the persistent data struct into an array of records
+  *   (Currently we are inserting into a database)
+  * - Pass the index i to each function, which will then access record i of struct
+  * - Struct defined globally, prior to main
+  * - In main,"instantiate" the struct witht what I will term an active name
+  *
+  *   CS2 Data Structures: Arrays
+  *   - Keyword Array
+  *     - One dimensional array
+  *     - CS also calls a vector but C++ does not
+  *     - Notation of base+offset
+  *     - First position is offset 0
+  *     - Stored consecutively in RAM
+  *     - N-dimeinsional array is an extension but not easily drawn
+  *     - Note the memory address in RAM ascend from bottom to top
+  */
+
 #include "VehicleConfiguration.hpp"
 #include "../lib/Exceptions.hpp"
 
@@ -171,11 +199,13 @@ void VehicleConfiguration::collectData() {
     carData.year = setYear();
     carData.make = setMake();
     carData.model = setModel(carData.make);
+
     if (carData.evOrIc == "EV") {
       carData.cargoOrPassenger = "Cargo";
       carData.cargoRoofline = "Medium";
       carData.wheelbase = "Medium";
     }
+
     carData.cargoOrPassenger = setCargoOrPassenger();
     carData.cargoRoofline = setCargoRoofline();
     carData.wheelbase = setWheelbase();
