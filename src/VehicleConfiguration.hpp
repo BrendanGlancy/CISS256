@@ -8,6 +8,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <functional>
 #include <unordered_map> // Added header for unordered_map
 
 struct car {

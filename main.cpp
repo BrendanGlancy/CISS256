@@ -4,7 +4,7 @@
 #include "./src/menu.h"
 #include <vector>
 
-void handleCollectData(std::vector<VehicleConfiguration *> vehicleConfigs,
+void handleCollectData(std::vector<VehicleConfiguration *> &vehicleConfigs,
                        char *message, int &carObjCount) {
   vehicleConfigs.push_back(new VehicleConfiguration());
   carObjCount++;
@@ -17,14 +17,16 @@ void handleCollectData(std::vector<VehicleConfiguration *> vehicleConfigs,
 void handleStoreData(Database &dbController,
                      std::vector<VehicleConfiguration *> &vehicleConfigs,
                      char *message) {
-  if (!vehicleConfigs.empty()) {
-    dbController.insert_db(vehicleConfigs.back()->getCarData());
-    delete vehicleConfigs.back(); // delete the object to prevent memory leak
-    vehicleConfigs.pop_back();    // remove the pointer from the vector
-    strcpy(message, "   Save data success   ");
-  } else {
-    strcpy(message, "No car configuration available to save");
-  }
+    if (!vehicleConfigs.empty()) {
+        for (auto vehicleConfig : vehicleConfigs) {
+            dbController.insert_db(vehicleConfig->getCarData());
+            delete vehicleConfig; // delete the object to prevent memory leak
+        }
+        vehicleConfigs.clear(); // clear the vector
+        strcpy(message, "  Data save success   ");
+    } else {
+        strcpy(message, "   No data to save     ");
+    }
 }
 
 void handleViewData(Database &dbController, char *message) {
@@ -93,10 +95,6 @@ int main() {
       std::cout << "Invalid choice" << std::endl;
       break;
     }
-  }
-
-  for (VehicleConfiguration *vehicleConfig : vehicleConfigs) {
-    delete vehicleConfig;
   }
 
   free(message);

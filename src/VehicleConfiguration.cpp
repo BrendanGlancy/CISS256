@@ -204,6 +204,7 @@ void VehicleConfiguration::collectData() {
       carData.cargoOrPassenger = "Cargo";
       carData.cargoRoofline = "Medium";
       carData.wheelbase = "Medium";
+      return;
     }
 
     carData.cargoOrPassenger = setCargoOrPassenger();
