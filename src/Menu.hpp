@@ -1,5 +1,4 @@
-#ifndef MENU_HPP
-#define MENU_HPP
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -13,5 +12,3 @@ public:
   void configCarPrompt();
   void exit();
 };
-
-#endif // VEHICLECONFIGURATION_HPP

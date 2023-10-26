@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef VEHICLECONFIGURATION_HPP
-#define VEHICLECONFIGURATION_HPP
-
 #include "../lib/header.h"
 #include <iostream>
 #include <sstream>
@@ -53,5 +50,3 @@ private:
                     const std::unordered_map<char, std::string> &options);
   int getValidatedInput(const std::string &prompt);
 };
-
-#endif // VEHICLECONFIGURATION_HPP

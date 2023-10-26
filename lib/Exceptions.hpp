@@ -1,5 +1,4 @@
-#ifndef EXCEPTIONS_HPP
-#define EXCEPTIONS_HPP
+#pragma once
 
 #include <stdexcept>
 
@@ -12,7 +11,3 @@ class InvalidChoiceException : public std::runtime_error {
 public:
   InvalidChoiceException();
 };
-
-// ... Additional exception classes ...
-
-#endif // EXCEPTIONS_HPP
