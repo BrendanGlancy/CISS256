@@ -15,18 +15,16 @@ void handleCollectData(std::vector<VehicleConfiguration *> vehicleConfigs,
 }
 
 void handleStoreData(Database &dbController,
-                     std::vector<VehicleConfiguration *> vehicleConfigs,
+                     std::vector<VehicleConfiguration *> &vehicleConfigs,
                      char *message) {
-  if (vehicleConfigs.empty()) {
-    strcpy(message, "   No data to save   ");
-    return;
-  }
+  if (!vehicleConfigs.empty()) {
     dbController.insert_db(vehicleConfigs.back()->getCarData());
-
-    delete vehicleConfigs.back();  
-    vehicleConfigs.pop_back();
-    
+    delete vehicleConfigs.back(); // delete the object to prevent memory leak
+    vehicleConfigs.pop_back();    // remove the pointer from the vector
     strcpy(message, "   Save data success   ");
+  } else {
+    strcpy(message, "No car configuration available to save");
+  }
 }
 
 void handleViewData(Database &dbController, char *message) {
@@ -95,6 +93,10 @@ int main() {
       std::cout << "Invalid choice" << std::endl;
       break;
     }
+  }
+
+  for (VehicleConfiguration *vehicleConfig : vehicleConfigs) {
+    delete vehicleConfig;
   }
 
   free(message);
