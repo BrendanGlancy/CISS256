@@ -33,6 +33,26 @@ Ensure you have the following installed:
 - A C++ compiler (e.g., GCC, G++)
 - Make (optional for easier building)
 
+### Installing Make
+
+- **Windows:** You can install Make on Windows by downloading and installing "GNU Make for Windows" from the official GNU website or using a package manager like Chocolatey.
+
+```powershell
+choco install make
+```
+
+
+- **Mac:** Make is included with the Xcode Command Line Tools on Mac. To install, run:
+
+```bash
+xcode-select --install
+```
+**Linux:** On most Linux distributions, Make is available in the system's package manager. For example, on Ubuntu, you can install it with:
+
+```bash
+sudo apt-get install build-essential
+```
+
 ### Building and Running
 
 1. Clone this repository:
