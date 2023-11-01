@@ -30,7 +30,7 @@ The Vehicle Configuration System is a C++ application that assists dealers in re
 ### Prerequisites
 
 Ensure you have the following installed:
-- A C++ compiler (e.g., GCC, Clang)
+- A C++ compiler (e.g., GCC, G++)
 - Make (optional for easier building)
 
 ### Building and Running
@@ -46,6 +46,12 @@ cd CISS256
 
 ```bash
 make
+``
+
+OR if you have clang
+
+```bash
+make COMPILER=CLANG
 ```
 
 *If you don't have Make installed, compile using your C++ compiler,* e.g., g++ -o app src/*.cpp

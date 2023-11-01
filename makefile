@@ -1,6 +1,14 @@
-#Specify the compilers
-CXX = g++
-CC = gcc
+# Specify the default compiler
+COMPILER ?= GCC
+
+# Specify the compilers
+ifeq ($(COMPILER),CLANG)
+  CXX = clang++
+  CC = clang
+else
+  CXX = g++
+  CC = gcc
+endif
 
 # Specify compiler flags
 CXXFLAGS = -Wall -std=c++17
