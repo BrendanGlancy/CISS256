@@ -46,7 +46,7 @@ cd CISS256
 
 ```bash
 make
-``
+```
 
 OR if you have clang
 
