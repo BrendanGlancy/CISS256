@@ -14,10 +14,13 @@ void gotoxy(int x, int y, int color_code) {
 
 void resetTextColor() { printf("\033[0m"); }
 
+/**
+ * @brief clearInputBuffer
+ * @details clear input buffer by calling getchar() until it returns '\n' or EOF
+ */ 
 void clearInputBuffer() {
   int c;
-  while ((c = getchar()) != '\n' && c != EOF)
-    ;
+  while ((c = getchar()) != '\n' && c != EOF);
 }
 
 void clearConsole() {

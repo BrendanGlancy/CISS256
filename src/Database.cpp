@@ -37,6 +37,17 @@ bool Database::prepare_stmt(const char *sql, sqlite3_stmt **stmt) {
 }
 
 void Database::bind_stmt(sqlite3_stmt *stmt, const car &data) {
+  /**
+    * sqlite3_bind_text takes the following arguments:
+    * 1. The prepared statement
+    * 2. The index of the SQL parameter to be SET
+    * 3. The value to bind to the parameter
+    * 4. The length of the SQL parameter to be SET. -1 
+    *   means that the length will be calculated automatically
+    * 5. SQLITE_TRANSIENT:
+    *   The SQLite library makes its own private copy of the data immediately,
+    *   before the sqlite3_bind_*() routine returns.
+    */
   sqlite3_bind_text(stmt, 1, data.dealerName.c_str(), -1, SQLITE_TRANSIENT);
   sqlite3_bind_text(stmt, 2, data.memoReference.c_str(), -1, SQLITE_TRANSIENT);
   sqlite3_bind_text(stmt, 3, data.color.c_str(), -1, SQLITE_TRANSIENT);
@@ -53,7 +64,7 @@ void Database::bind_stmt(sqlite3_stmt *stmt, const car &data) {
 
 void Database::execute_sql(const std::string &sql, const std::string &msg) {
   char *errMsg = nullptr;
-  int rc = sqlite3_exec(db, sql.c_str(), NULL, NULL, &errMsg);
+  int rc = sqlite3_exec(db, sql.c_str(), NULL, NULL, &errMsg); 
 
   if (rc != SQLITE_OK) {
     std::cerr << msg << errMsg << std::endl;
@@ -92,7 +103,7 @@ void Database::query_all() {
 
   if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
     display_db(stmt);
-    sqlite3_finalize(stmt);
+    sqlite3_finalize(stmt); // releases the statement
 
     clearInputBuffer();
 
@@ -105,6 +116,11 @@ void Database::query_all() {
 
 void Database::display_db(sqlite3_stmt *stmt) {
   while (sqlite3_step(stmt) == SQLITE_ROW) {
+    /**
+      * sqlite3_column_text takes the following arguments:
+      * 1. The prepared statement
+      * 2. The index of the column to be read
+      */ 
     printf("============================================\n");
     std::cout << "ID: " << sqlite3_column_int(stmt, 0) << std::endl;
     std::cout << "Dealer: " << sqlite3_column_text(stmt, 1) << std::endl;
@@ -148,6 +164,7 @@ void Database::update_db() {
   std::string update = get_update();
   sqlite3_stmt *stmt;
 
+  // sql.c_str() converts the string to a const char *
   if (prepare_stmt(sql.c_str(), &stmt)) {
     sqlite3_bind_text(stmt, 1, update.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 2, update_id);
@@ -156,6 +173,7 @@ void Database::update_db() {
 }
 
 std::string Database::col_choice() {
+  // TODO: improve the keys names
   std::unordered_map<char, std::string> columns = {
       {'d', "vehicle_dealer"},
       {'m', "vehicle_memo"},
@@ -223,6 +241,10 @@ bool Database::column_exists(const std::string &table_name,
   sqlite3_stmt *stmt;
 
   if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL) == SQLITE_OK) {
+    /**
+    * sqlite3_step() returns SQLITE_ROW if another row of data is ready for
+    * processing, SQLITE_DONE if the statement has finished executing
+    */
     if (sqlite3_step(stmt) == SQLITE_ROW) {
       return true;
     } else {
@@ -233,4 +255,5 @@ bool Database::column_exists(const std::string &table_name,
   }
 }
 
+// destructor
 Database::~Database() { sqlite3_close(db); }

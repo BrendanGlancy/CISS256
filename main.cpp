@@ -9,9 +9,9 @@ void handleCollectData(std::vector<VehicleConfiguration *> &vehicleConfigs,
   vehicleConfigs.push_back(new VehicleConfiguration());
   carObjCount++;
   clearConsole();
-  sprintf(message, "%d car object(s) created", carObjCount);
+  printf(message, "%d car object(s) created", carObjCount);
   configCarPrompt();
-  vehicleConfigs.back()->collectData();
+  vehicleConfigs.back()->collectData(); // collect data for the last car object
 }
 
 void handleStoreData(Database &dbController,

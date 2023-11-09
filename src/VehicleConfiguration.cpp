@@ -1,33 +1,28 @@
 /**
-  * Final Requirement for Second Deliverable
-  * - Declare the struct early in the file;
-  *   intstantiate it by active name in main
-  * - Refer to it by active name throughout the functions
-  *
-  * Coverage
-  * - Continguous array (fixed size) which are part of std
-  * - Continguous pointers
-  * - Linked List, basis for object
-  *
-  * - Now: turn the persistent data struct into an array of records
-  *   (Currently we are inserting into a database)
-  * - Pass the index i to each function, which will then access record i of struct
-  * - Struct defined globally, prior to main
-  * - In main,"instantiate" the struct witht what I will term an active name
-  *
-  *   CS2 Data Structures: Arrays
-  *   - Keyword Array
-  *     - One dimensional array
-  *     - CS also calls a vector but C++ does not
-  *     - Notation of base+offset
-  *     - First position is offset 0
-  *     - Stored consecutively in RAM
-  *     - N-dimeinsional array is an extension but not easily drawn
-  *     - Note the memory address in RAM ascend from bottom to top
-  */
+ * @author : Brendan Glancy
+ *
+ * Final Requirement for Second Deliverable
+ * - Declare the struct early in the file;
+ *   intstantiate it by active name in main
+ * - Refer to it by active name throughout the functions
+ *
+ * Coverage
+ * - Continguous array (fixed size) which are part of std
+ * - Continguous pointers
+ * - Linked List, basis for object
+ *
+ * - Now: turn the persistent data struct into an array of records
+ *   (Currently we are inserting into a database)
+ * - Pass the index i to each function, which will then access record i of
+ * struct
+ * - Struct defined globally, prior to main
+ * - In main,"instantiate" the struct witht what I will term an active name
+ *
+ */
 
 #include "VehicleConfiguration.hpp"
 #include "../lib/Exceptions.hpp"
+#include <sstream>
 
 // Path: VehicleConfiguration.cpp
 
@@ -51,7 +46,8 @@ int VehicleConfiguration::inputQuantity() {
 
   while (true) {
     input = inputWithPrompt("Enter the quantity of vehicles: ", false);
-    std::stringstream ss(input);
+    std::stringstream ss(input); // convert string to int using stringstream
+    // read data from ss and store in quantity till we reach end of stream
     if (ss >> quantity && ss.eof())
       break;
 
@@ -63,18 +59,18 @@ int VehicleConfiguration::inputQuantity() {
 std::string VehicleConfiguration::getOptionFromUser(
     const std::string &prompt,
     const std::unordered_map<char, std::string> &options) {
+  // &options means that we are passing a reference to the map, not a copy.
+  // meaning we must use pointers to access the map.
 
   while (true) {
     char choice = toupper(inputWithPrompt(prompt, false)[0]);
 
-    // Check if user wants to quit.
     if (choice == 'Q')
       throw UserQuitException();
 
-    // Check if choice is valid.
     auto found = options.find(choice);
     if (found != options.end()) {
-      return found->second;
+      return found->second; // found->second is the value of the key-value pair.
     }
 
     std::cout << "Invalid option. Please try again." << std::endl;
@@ -88,10 +84,10 @@ int VehicleConfiguration::getValidatedInput(const std::string &prompt) {
   while (true) {
     std::cout << prompt;
     std::getline(std::cin, input);
-    std::stringstream ss(input);
-    if (ss >> value && ss.eof()) {
+    std::stringstream ss(input); // convert string to int using stringstream
+    
+    if (ss >> value && ss.eof())
       break;
-    }
     std::cout << "Invalid input, please try again." << std::endl;
   }
 
@@ -212,7 +208,7 @@ void VehicleConfiguration::collectData() {
     carData.wheelbase = setWheelbase();
   } catch (const std::exception &e) {
     if (menuCallback) {
-      menuCallback();
+      menuCallback(); // call the menu callback function
     }
   }
 }
