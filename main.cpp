@@ -4,6 +4,10 @@
 #include "./src/menu.h"
 #include <vector>
 
+/**
+ * @note The car object is stored in the vector as a pointer
+ * To avoid copying the object when pushing it to the vector
+ */
 void handleCollectData(std::vector<VehicleConfiguration *> &vehicleConfigs,
                        char *message, int &carObjCount) {
   vehicleConfigs.push_back(new VehicleConfiguration());
@@ -17,16 +21,16 @@ void handleCollectData(std::vector<VehicleConfiguration *> &vehicleConfigs,
 void handleStoreData(Database &dbController,
                      std::vector<VehicleConfiguration *> &vehicleConfigs,
                      char *message) {
-    if (!vehicleConfigs.empty()) {
-        for (auto vehicleConfig : vehicleConfigs) {
-            dbController.insert_db(vehicleConfig->getCarData());
-            delete vehicleConfig; // delete the object to prevent memory leak
-        }
-        vehicleConfigs.clear(); // clear the vector
-        strcpy(message, "  Data save success   ");
-    } else {
-        strcpy(message, "   No data to save     ");
+  if (!vehicleConfigs.empty()) {
+    for (auto vehicleConfig : vehicleConfigs) {
+      dbController.insert_db(vehicleConfig->getCarData());
+      delete vehicleConfig; // delete the object to prevent memory leak
     }
+    vehicleConfigs.clear(); // clear the vector
+    strcpy(message, "  Data save success   ");
+  } else {
+    strcpy(message, "   No data to save     ");
+  }
 }
 
 void handleViewData(Database &dbController, char *message) {
