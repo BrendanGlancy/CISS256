@@ -8,49 +8,56 @@
  * @note The car object is stored in the vector as a pointer
  * To avoid copying the object when pushing it to the vector
  */
-void handleCollectData(std::vector<VehicleConfiguration *> &vehicleConfigs,
+void handleCollectData(std::vector<VehicleConfiguration *> &vehicle_configs,
                        char *message, int &carObjCount) {
-  vehicleConfigs.push_back(new VehicleConfiguration());
+  vehicle_configs.push_back(new VehicleConfiguration());
   carObjCount++;
   clearConsole();
   printf(message, "%d car object(s) created", carObjCount);
   configCarPrompt();
-  vehicleConfigs.back()->collectData(); // collect data for the last car object
+  vehicle_configs.back()->collectData(); // collect data for the last car object
 }
 
-void handleStoreData(Database &dbController,
-                     std::vector<VehicleConfiguration *> &vehicleConfigs,
+void handleStoreData(Database &db_controller,
+                     std::vector<VehicleConfiguration *> &vehicle_configs,
                      char *message) {
-  if (!vehicleConfigs.empty()) {
-    for (auto vehicleConfig : vehicleConfigs) {
-      dbController.insert_db(vehicleConfig->getCarData());
+  if (!vehicle_configs.empty()) {
+    /**
+     * NOTE according to google cpp style guide
+     * Use type deduction only if it makes the code clearer to readers who
+     * aren't familiar with the project, or if it makes the code safer. Do not
+     * use it merely to avoid the inconvenience of writing an explicit type. NOT
+     * sure how else this could be done
+     */
+    for (auto vehicleConfig : vehicle_configs) {
+      db_controller.insert_db(vehicleConfig->getCarData());
       delete vehicleConfig; // delete the object to prevent memory leak
     }
-    vehicleConfigs.clear(); // clear the vector
+    vehicle_configs.clear(); // clear the vector
     strcpy(message, "  Data save success   ");
   } else {
     strcpy(message, "   No data to save     ");
   }
 }
 
-void handleViewData(Database &dbController, char *message) {
+void handleViewData(Database &db_controller, char *message) {
   clearConsole();
-  dbController.query_all();
+  db_controller.query_all();
   strcpy(message, "   View data success   ");
   clearConsole();
 }
 
-void handleDeleteData(Database &dbController, char *message) {
+void handleDeleteData(Database &db_controller, char *message) {
   clearConsole();
-  dbController.query_all();
-  dbController.delete_db();
+  db_controller.query_all();
+  db_controller.delete_db();
   strcpy(message, "  Delete data success  ");
 }
 
-void handleUpdateData(Database &dbController, char *message) {
+void handleUpdateData(Database &db_controller, char *message) {
   clearConsole();
-  dbController.query_all();
-  dbController.update_db();
+  db_controller.query_all();
+  db_controller.update_db();
   strcpy(message, "  Update data success  ");
 }
 
@@ -61,10 +68,10 @@ int main() {
 
   bool running = true;
 
-  std::vector<VehicleConfiguration *> vehicleConfigs;
-  Database dbController;
+  std::vector<VehicleConfiguration *> vehicle_configs;
+  Database db_controller;
 
-  dbController.seed_db();
+  db_controller.seed_db();
   welcome();
 
   while (running) {
@@ -77,19 +84,19 @@ int main() {
 
     switch (choice) {
     case 1:
-      handleCollectData(vehicleConfigs, message, carObjCount);
+      handleCollectData(vehicle_configs, message, carObjCount);
       break;
     case 2:
-      handleStoreData(dbController, vehicleConfigs, message);
+      handleStoreData(db_controller, vehicle_configs, message);
       break;
     case 3:
-      handleViewData(dbController, message);
+      handleViewData(db_controller, message);
       break;
     case 4:
-      handleUpdateData(dbController, message);
+      handleUpdateData(db_controller, message);
       break;
     case 5:
-      handleDeleteData(dbController, message);
+      handleDeleteData(db_controller, message);
       break;
     case 6:
       clearConsole();
