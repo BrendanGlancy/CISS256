@@ -9,7 +9,6 @@ Database::Database() {
 }
 
 void Database::seed_db() {
-  // Create the tables and seed the database
   const std::string sql = "CREATE TABLE IF NOT EXISTS vehicle_configuration ("
                           "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                           "vehicle_dealer TEXT NOT NULL,"
@@ -37,17 +36,6 @@ bool Database::prepare_stmt(const char *sql, sqlite3_stmt **stmt) {
 }
 
 void Database::bind_stmt(sqlite3_stmt *stmt, const car &data) {
-  /**
-    * sqlite3_bind_text takes the following arguments:
-    * 1. The prepared statement
-    * 2. The index of the SQL parameter to be SET
-    * 3. The value to bind to the parameter
-    * 4. The length of the SQL parameter to be SET. -1 
-    *   means that the length will be calculated automatically
-    * 5. SQLITE_TRANSIENT:
-    *   The SQLite library makes its own private copy of the data immediately,
-    *   before the sqlite3_bind_*() routine returns.
-    */
   sqlite3_bind_text(stmt, 1, data.dealerName.c_str(), -1, SQLITE_TRANSIENT);
   sqlite3_bind_text(stmt, 2, data.memoReference.c_str(), -1, SQLITE_TRANSIENT);
   sqlite3_bind_text(stmt, 3, data.color.c_str(), -1, SQLITE_TRANSIENT);
@@ -64,12 +52,11 @@ void Database::bind_stmt(sqlite3_stmt *stmt, const car &data) {
 
 void Database::execute_sql(const std::string &sql, const std::string &msg) {
   char *errMsg = nullptr;
-  int rc = sqlite3_exec(db, sql.c_str(), NULL, NULL, &errMsg); 
+  int rc = sqlite3_exec(db, sql.c_str(), NULL, NULL, &errMsg);
 
   if (rc != SQLITE_OK) {
     std::cerr << msg << errMsg << std::endl;
     sqlite3_free(errMsg);
-    // You might want to handle this error condition.
   } else {
     std::cout << "Operation success" << std::endl;
   }
@@ -103,9 +90,9 @@ void Database::query_all() {
 
   if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
     display_db(stmt);
-    sqlite3_finalize(stmt); // releases the statement
+    sqlite3_finalize(stmt);
 
-    clearInputBuffer();
+    clear_input_buffer();
 
     std::cout << "Press [enter] to continue...";
     getchar();
@@ -116,11 +103,6 @@ void Database::query_all() {
 
 void Database::display_db(sqlite3_stmt *stmt) {
   while (sqlite3_step(stmt) == SQLITE_ROW) {
-    /**
-      * sqlite3_column_text takes the following arguments:
-      * 1. The prepared statement
-      * 2. The index of the column to be read
-      */ 
     printf("============================================\n");
     std::cout << "ID: " << sqlite3_column_int(stmt, 0) << std::endl;
     std::cout << "Dealer: " << sqlite3_column_text(stmt, 1) << std::endl;
@@ -147,12 +129,10 @@ void Database::sql_error(sqlite3_stmt *stmt, std::string msg) {
   }
 }
 
-// TODO
 int Database::get_id() {
   int id;
   std::cout << "Enter ID of the table you want to Modify: ";
-  std::cin >> id; // if the user enters a q/Q then we should return the user to
-                  // the main menu
+  std::cin >> id;
   return id;
 }
 
@@ -160,7 +140,7 @@ void Database::update_db() {
   int update_id = get_id();
 
   std::string sql = col_choice();
-  clearInputBuffer();
+  clear_input_buffer();
   std::string update = get_update();
   sqlite3_stmt *stmt;
 
@@ -241,10 +221,6 @@ bool Database::column_exists(const std::string &table_name,
   sqlite3_stmt *stmt;
 
   if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL) == SQLITE_OK) {
-    /**
-    * sqlite3_step() returns SQLITE_ROW if another row of data is ready for
-    * processing, SQLITE_DONE if the statement has finished executing
-    */
     if (sqlite3_step(stmt) == SQLITE_ROW) {
       return true;
     } else {

@@ -1,35 +1,13 @@
-/**
- * @author : Brendan Glancy
- *
- * Final Requirement for Second Deliverable
- * - Declare the struct early in the file;
- *   intstantiate it by active name in main
- * - Refer to it by active name throughout the functions
- *
- * Coverage
- * - Continguous array (fixed size) which are part of std
- * - Continguous pointers
- * - Linked List, basis for object
- *
- * - Now: turn the persistent data struct into an array of records
- *   (Currently we are inserting into a database)
- * - Pass the index i to each function, which will then access record i of
- * struct
- * - Struct defined globally, prior to main
- * - In main,"instantiate" the struct witht what I will term an active name
- *
- */
+// @author : Brendan Glancy
 
 #include "VehicleConfiguration.hpp"
 #include "../lib/Exceptions.hpp"
 #include <sstream>
 
-// Path: VehicleConfiguration.cpp
-
 std::string VehicleConfiguration::inputWithPrompt(const std::string &prompt,
                                                   bool clear) {
   if (clear)
-    clearInputBuffer();
+    clear_input_buffer();
 
   std::cout << prompt;
   std::string input;
@@ -46,8 +24,7 @@ int VehicleConfiguration::inputQuantity() {
 
   while (true) {
     input = inputWithPrompt("Enter the quantity of vehicles: ", false);
-    std::stringstream ss(input); // convert string to int using stringstream
-    // read data from ss and store in quantity till we reach end of stream
+    std::stringstream ss(input); 
     if (ss >> quantity && ss.eof())
       break;
 
@@ -59,8 +36,6 @@ int VehicleConfiguration::inputQuantity() {
 std::string VehicleConfiguration::getOptionFromUser(
     const std::string &prompt,
     const std::unordered_map<char, std::string> &options) {
-  // &options means that we are passing a reference to the map, not a copy.
-  // meaning we must use pointers to access the map.
 
   while (true) {
     char choice = toupper(inputWithPrompt(prompt, false)[0]);
@@ -70,7 +45,7 @@ std::string VehicleConfiguration::getOptionFromUser(
 
     auto found = options.find(choice);
     if (found != options.end()) {
-      return found->second; // found->second is the value of the key-value pair.
+      return found->second; 
     }
 
     std::cout << "Invalid option. Please try again." << std::endl;
@@ -84,7 +59,7 @@ int VehicleConfiguration::getValidatedInput(const std::string &prompt) {
   while (true) {
     std::cout << prompt;
     std::getline(std::cin, input);
-    std::stringstream ss(input); // convert string to int using stringstream
+    std::stringstream ss(input); 
     
     if (ss >> value && ss.eof())
       break;
@@ -180,8 +155,6 @@ std::string VehicleConfiguration::setModel(std::string make) {
   }
 }
 
-// we need to collect the data pass it to our database class to be stored in a
-// database
 void VehicleConfiguration::collectData() {
   try {
     carData.dealerName =
@@ -208,7 +181,7 @@ void VehicleConfiguration::collectData() {
     carData.wheelbase = setWheelbase();
   } catch (const std::exception &e) {
     if (menuCallback) {
-      menuCallback(); // call the menu callback function
+      menuCallback();
     }
   }
 }

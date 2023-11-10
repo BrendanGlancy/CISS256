@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 void welcome() {
-  clearConsole();
+  clear_console();
   gotoxy(0, 0, 34);
   printf("=========================================================");
   gotoxy(2, 2, 36);
@@ -43,7 +43,7 @@ void displayMenu() {
 }
 
 void configCarPrompt() {
-  clearConsole();
+  clear_console();
   gotoxy(0, 2, 36);
   printf("=================================================");
   gotoxy(0, 4, 36);
@@ -72,7 +72,7 @@ int getChoice() {
 
 // make more dynamic
 void infoHeader(char *message) {
-  clearConsole();
+  clear_console();
   gotoxy(4, 1, 36);
   printf("=================================================");
   gotoxy(4, 3, 36);
