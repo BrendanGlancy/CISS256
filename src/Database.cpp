@@ -35,7 +35,7 @@ bool Database::prepare_stmt(const char *sql, sqlite3_stmt **stmt) {
   return true;
 }
 
-void Database::bind_stmt(sqlite3_stmt *stmt, const car &data) {
+void Database::bind_stmt(sqlite3_stmt *stmt, const Car &data) {
   sqlite3_bind_text(stmt, 1, data.dealerName.c_str(), -1, SQLITE_TRANSIENT);
   sqlite3_bind_text(stmt, 2, data.memoReference.c_str(), -1, SQLITE_TRANSIENT);
   sqlite3_bind_text(stmt, 3, data.color.c_str(), -1, SQLITE_TRANSIENT);
@@ -62,7 +62,7 @@ void Database::execute_sql(const std::string &sql, const std::string &msg) {
   }
 }
 
-void Database::insert_db(const car &data) {
+void Database::insert_db(const Car &data) {
   const char *sql = "INSERT INTO vehicle_configuration ("
                     "vehicle_dealer,"
                     "vehicle_memo,"
