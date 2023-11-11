@@ -4,7 +4,7 @@
 #include "../lib/Exceptions.hpp"
 #include <sstream>
 
-std::string VehicleConfiguration::inputWithPrompt(const std::string &prompt,
+std::string VehicleConfiguration::input_prompt(const std::string &prompt,
                                                   bool clear) {
   if (clear)
     clear_input_buffer();
@@ -18,12 +18,12 @@ std::string VehicleConfiguration::inputWithPrompt(const std::string &prompt,
   return input;
 }
 
-int VehicleConfiguration::inputQuantity() {
+int VehicleConfiguration::input_quantity() {
   std::string input;
   int quantity;
 
   while (true) {
-    input = inputWithPrompt("Enter the quantity of vehicles: ", false);
+    input = input_prompt("Enter the quantity of vehicles: ", false);
     std::stringstream ss(input); 
     if (ss >> quantity && ss.eof())
       break;
@@ -33,12 +33,12 @@ int VehicleConfiguration::inputQuantity() {
   return quantity;
 }
 
-std::string VehicleConfiguration::getOptionFromUser(
+std::string VehicleConfiguration::get_option(
     const std::string &prompt,
     const std::unordered_map<char, std::string> &options) {
 
   while (true) {
-    char choice = toupper(inputWithPrompt(prompt, false)[0]);
+    char choice = toupper(input_prompt(prompt, false)[0]);
 
     if (choice == 'Q')
       throw UserQuitException();
@@ -53,9 +53,10 @@ std::string VehicleConfiguration::getOptionFromUser(
 }
 
 // TODO, make this a template function price should be a float
-int VehicleConfiguration::getValidatedInput(const std::string &prompt) {
+int VehicleConfiguration::get_validated_input(const std::string &prompt) {
   int value;
   std::string input;
+
   while (true) {
     std::cout << prompt;
     std::getline(std::cin, input);
@@ -69,8 +70,8 @@ int VehicleConfiguration::getValidatedInput(const std::string &prompt) {
   return value;
 }
 
-std::string VehicleConfiguration::setColor() {
-  return getOptionFromUser("Color (W)hite, (G)ray, (B)lack: ",
+std::string VehicleConfiguration::set_color() {
+  return get_option("Color (W)hite, (G)ray, (B)lack: ",
                            {
                                {'W', "White"},
                                {'G', "Gray"},
@@ -78,23 +79,23 @@ std::string VehicleConfiguration::setColor() {
                            });
 }
 
-std::string VehicleConfiguration::setEngineType() {
-  return getOptionFromUser("Engine Type (EV) or (IC): ", {
+std::string VehicleConfiguration::set_engine() {
+  return get_option("Engine Type (EV) or (IC): ", {
                                                              {'E', "EV"},
                                                              {'I', "IC"},
                                                          });
 }
 
-std::string VehicleConfiguration::setCargoOrPassenger() {
-  return getOptionFromUser("Cargo or Passenger (C)argo or (P)assenger: ",
+std::string VehicleConfiguration::set_cargo_passenger() {
+  return get_option("Cargo or Passenger (C)argo or (P)assenger: ",
                            {
                                {'C', "Cargo"},
                                {'P', "Passenger"},
                            });
 }
 
-std::string VehicleConfiguration::setCargoRoofline() {
-  return getOptionFromUser("Cargo Roofline (L)ow, (R)aised, (H)igh: ",
+std::string VehicleConfiguration::set_roofline() {
+  return get_option("Cargo Roofline (L)ow, (R)aised, (H)igh: ",
                            {
                                {'L', "Low"},
                                {'R', "Raised"},
@@ -102,8 +103,8 @@ std::string VehicleConfiguration::setCargoRoofline() {
                            });
 }
 
-std::string VehicleConfiguration::setWheelbase() {
-  return getOptionFromUser("Wheelbase (S)hort, (M)edium, (L)ong: ",
+std::string VehicleConfiguration::set_wheelbase() {
+  return get_option("Wheelbase (S)hort, (M)edium, (L)ong: ",
                            {
                                {'S', "Short"},
                                {'M', "Medium"},
@@ -111,16 +112,16 @@ std::string VehicleConfiguration::setWheelbase() {
                            });
 }
 
-int VehicleConfiguration::setPrice() {
-  return getValidatedInput("Enter the price of the vehicle(s): ");
+int VehicleConfiguration::set_price() {
+  return get_validated_input("Enter the price of the vehicle(s): ");
 }
 
-int VehicleConfiguration::setYear() {
-  return getValidatedInput("Enter the year of the vehicle(s): ");
+int VehicleConfiguration::set_year() {
+  return get_validated_input("Enter the year of the vehicle(s): ");
 }
 
-std::string VehicleConfiguration::setMake() {
-  return getOptionFromUser("Make (T)oyota, (H)onda, (F)ord: ",
+std::string VehicleConfiguration::set_make() {
+  return get_option("Make (T)oyota, (H)onda, (F)ord: ",
                            {
                                {'T', "Toyota"},
                                {'H', "Honda"},
@@ -128,23 +129,23 @@ std::string VehicleConfiguration::setMake() {
                            });
 }
 
-std::string VehicleConfiguration::setModel(std::string make) {
+std::string VehicleConfiguration::set_model(std::string make) {
   if (make == "Toyota") {
-    return getOptionFromUser("Model (C)amry, (R)av4, (P)rius: ",
+    return get_option("Model (C)amry, (R)av4, (P)rius: ",
                              {
                                  {'C', "Camry"},
                                  {'R', "Rav4"},
                                  {'P', "Prius"},
                              });
   } else if (make == "Honda") {
-    return getOptionFromUser("Model (A)ccord, (C)ivic, CR-(V): ",
+    return get_option("Model (A)ccord, (C)ivic, CR-(V): ",
                              {
                                  {'A', "Accord"},
                                  {'C', "Civic"},
                                  {'V', "Crv"},
                              });
   } else if (make == "Ford") {
-    return getOptionFromUser("Model (F)150, (M)ustang, (E)scape: ",
+    return get_option("Model (F)150, (M)ustang, (E)scape: ",
                              {
                                  {'F', "F150"},
                                  {'M', "Mustang"},
@@ -155,33 +156,33 @@ std::string VehicleConfiguration::setModel(std::string make) {
   }
 }
 
-void VehicleConfiguration::collectData() {
+void VehicleConfiguration::collect_data() {
   try {
-    carData.dealerName =
-        VehicleConfiguration::inputWithPrompt("Dealer Name: ", true);
-    carData.memoReference =
-        VehicleConfiguration::inputWithPrompt("Memo Reference: ", false);
-    carData.quantity = inputQuantity();
-    carData.color = setColor();
-    carData.evOrIc = setEngineType();
-    carData.price = setPrice();
-    carData.year = setYear();
-    carData.make = setMake();
-    carData.model = setModel(carData.make);
+    car_data.dealer_name =
+        VehicleConfiguration::input_prompt("Dealer Name: ", true);
+    car_data.memo=
+        VehicleConfiguration::input_prompt("Memo Reference: ", false);
+    car_data.quantity = input_quantity();
+    car_data.color = set_color();
+    car_data.ev_ic = set_engine();
+    car_data.price = set_price();
+    car_data.year = set_year();
+    car_data.make = set_make();
+    car_data.model = set_model(car_data.make);
 
-    if (carData.evOrIc == "EV") {
-      carData.cargoOrPassenger = "Cargo";
-      carData.cargoRoofline = "Medium";
-      carData.wheelbase = "Medium";
+    if (car_data.ev_ic == "EV") {
+      car_data.cargo_passenger = "Cargo";
+      car_data.cargo_roofline = "Medium";
+      car_data.wheelbase = "Medium";
       return;
     }
 
-    carData.cargoOrPassenger = setCargoOrPassenger();
-    carData.cargoRoofline = setCargoRoofline();
-    carData.wheelbase = setWheelbase();
+    car_data.cargo_passenger = set_cargo_passenger();
+    car_data.cargo_roofline = set_roofline();
+    car_data.wheelbase = set_wheelbase();
   } catch (const std::exception &e) {
-    if (menuCallback) {
-      menuCallback();
+    if (Menu_Callback) {
+      Menu_Callback();
     }
   }
 }

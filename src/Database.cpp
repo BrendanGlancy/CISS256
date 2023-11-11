@@ -36,13 +36,13 @@ bool Database::prepare_stmt(const char *sql, sqlite3_stmt **stmt) {
 }
 
 void Database::bind_stmt(sqlite3_stmt *stmt, const Car &data) {
-  sqlite3_bind_text(stmt, 1, data.dealerName.c_str(), -1, SQLITE_TRANSIENT);
-  sqlite3_bind_text(stmt, 2, data.memoReference.c_str(), -1, SQLITE_TRANSIENT);
+  sqlite3_bind_text(stmt, 1, data.dealer_name.c_str(), -1, SQLITE_TRANSIENT);
+  sqlite3_bind_text(stmt, 2, data.memo.c_str(), -1, SQLITE_TRANSIENT);
   sqlite3_bind_text(stmt, 3, data.color.c_str(), -1, SQLITE_TRANSIENT);
-  sqlite3_bind_text(stmt, 4, data.evOrIc.c_str(), -1, SQLITE_TRANSIENT);
-  sqlite3_bind_text(stmt, 5, data.cargoOrPassenger.c_str(), -1,
+  sqlite3_bind_text(stmt, 4, data.ev_ic.c_str(), -1, SQLITE_TRANSIENT);
+  sqlite3_bind_text(stmt, 5, data.cargo_passenger.c_str(), -1,
                     SQLITE_TRANSIENT);
-  sqlite3_bind_text(stmt, 6, data.cargoRoofline.c_str(), -1, SQLITE_TRANSIENT);
+  sqlite3_bind_text(stmt, 6, data.cargo_roofline.c_str(), -1, SQLITE_TRANSIENT);
   sqlite3_bind_text(stmt, 7, data.wheelbase.c_str(), -1, SQLITE_TRANSIENT);
   sqlite3_bind_text(stmt, 8, data.make.c_str(), -1, SQLITE_TRANSIENT);
   sqlite3_bind_text(stmt, 9, data.model.c_str(), -1, SQLITE_TRANSIENT);

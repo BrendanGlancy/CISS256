@@ -16,8 +16,8 @@
  */
 struct Car {
   float id;
-  std::string dealerName, memoReference, color, evOrIc, cargoOrPassenger,
-      cargoRoofline, wheelbase, make, model = "";
+  std::string dealer_name, memo, color, ev_ic, cargo_passenger, cargo_roofline,
+      wheelbase, make, model = "";
 
   int year, quantity, price = 0;
 };
@@ -35,8 +35,8 @@ public:
    *
    * @param callback The function to be called for the menu.
    */
-  void setMenuCallback(Callback callback) {
-    menuCallback = std::move(callback);
+  void set_menu_callback(Callback callback) {
+    Menu_Callback = std::move(callback);
   }
 
   /**
@@ -47,35 +47,36 @@ public:
   /**
    * Collects data from the user and stores it in the carData struct.
    */
-  void collectData();
+  void collect_data();
 
   /**
    * Returns the carData struct.
    *
    * @return The carData struct.
    */
-  Car getCarData() const { return carData; }
+  Car get_car_data() const { return car_data; }
 
 private:
-  // declare the carData struct as a pointer
-  Car carData;
+  Car car_data;
 
-  Callback menuCallback;
-  int inputQuantity();
+  Callback Menu_Callback;
+  int input_quantity();
 
-  void welcomeMessage();
-  std::string inputWithPrompt(const std::string &prompt, bool clear);
-  std::string setColor();
-  std::string setEngineType();
-  std::string setCargoOrPassenger();
-  std::string setCargoRoofline();
-  std::string setWheelbase();
-  int setYear();
-  int setPrice();
-  std::string setMake();
-  std::string setModel(std::string make);
-  std::string
-  getOptionFromUser(const std::string &prompt,
-                    const std::unordered_map<char, std::string> &options);
-  int getValidatedInput(const std::string &prompt);
+  void welcome_message();
+  std::string input_prompt(const std::string &prompt, bool clear);
+  std::string set_color();
+  std::string set_engine();
+  std::string set_cargo_passenger();
+  std::string set_roofline();
+  std::string set_wheelbase();
+
+  int set_year();
+  int set_price();
+
+  std::string set_make();
+  std::string set_model(std::string make);
+  std::string get_option(const std::string &prompt,
+                         const std::unordered_map<char, std::string> &options);
+
+  int get_validated_input(const std::string &prompt);
 };

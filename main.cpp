@@ -9,9 +9,10 @@ void handleCollectData(std::vector<VehicleConfiguration *> &vehicle_configs,
   vehicle_configs.push_back(new VehicleConfiguration());
   carObjCount++;
   clear_console();
-  printf(message, "%d car object(s) created", carObjCount);
+  // TODO: find an alternative to sprintf
+  sprintf(message, "%d car object(s) created", carObjCount);
   configCarPrompt();
-  vehicle_configs.back()->collectData(); 
+  vehicle_configs.back()->collect_data(); 
 }
 
 void handleStoreData(Database &db_controller,
@@ -19,11 +20,11 @@ void handleStoreData(Database &db_controller,
                      char *message) {
   if (!vehicle_configs.empty()) {
     for (auto vehicleConfig : vehicle_configs) {
-      db_controller.insert_db(vehicleConfig->getCarData());
+      db_controller.insert_db(vehicleConfig->get_car_data());
       delete vehicleConfig; 
     }
     vehicle_configs.clear(); 
-    strcpy(message, "  Data save success   ");
+    strcpy(message, "   Data save success   ");
   } else {
     strcpy(message, "   No data to save     ");
   }
