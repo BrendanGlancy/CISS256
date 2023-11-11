@@ -1,8 +1,9 @@
-#include "../lib/header.h"
-#include "../src/Database.hpp"
 #include <cassert>
 #include <filesystem>
 #include <iostream>
+
+#include "../lib/header.h"
+#include "../src/Database.hpp"
 
 void testDatabaseConstructor() {
   Database db;

@@ -6,6 +6,7 @@ extern "C" {
 
 #include <stdio.h>
 #include <string.h>
+
 #include "../lib/header.h"
 
 /**
@@ -28,14 +29,14 @@ void configCarPrompt();
 
 /**
  * Retrieves the user's choice from the menu.
- * 
+ *
  * @return The integer value representing the user's choice.
  */
 int getChoice();
 
 /**
  * Displays a header for informational messages.
- * 
+ *
  * @param message The message to be displayed in the header.
  */
 void infoHeader(char message[]);

@@ -1,6 +1,7 @@
-#include "header.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "header.h"
 
 void gotoxy(int x, int y, int color_code) {
   printf("\033[%d;%dH", y, x);

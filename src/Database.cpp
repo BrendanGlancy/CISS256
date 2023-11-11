@@ -1,4 +1,5 @@
 #include "Database.hpp"
+
 #include <functional>
 
 Database::Database() {
@@ -9,19 +10,20 @@ Database::Database() {
 }
 
 void Database::seed_db() {
-  const std::string sql = "CREATE TABLE IF NOT EXISTS vehicle_configuration ("
-                          "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                          "vehicle_dealer TEXT NOT NULL,"
-                          "vehicle_memo TEXT NOT NULL,"
-                          "vehicle_color TEXT NOT NULL,"
-                          "vehicle_engine TEXT NOT NULL,"
-                          "vehicle_cargoOrPassenger TEXT NOT NULL,"
-                          "vehicle_cargoRoofline TEXT NOT NULL,"
-                          "vehicle_wheelbase TEXT NOT NULL,"
-                          "vehicle_make TEXT NOT NULL,"
-                          "vehicle_model TEXT NOT NULL,"
-                          "vehicle_year INTEGER NOT NULL,"
-                          "vehicle_price INTEGER NOT NULL);";
+  const std::string sql =
+      "CREATE TABLE IF NOT EXISTS vehicle_configuration ("
+      "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+      "vehicle_dealer TEXT NOT NULL,"
+      "vehicle_memo TEXT NOT NULL,"
+      "vehicle_color TEXT NOT NULL,"
+      "vehicle_engine TEXT NOT NULL,"
+      "vehicle_cargoOrPassenger TEXT NOT NULL,"
+      "vehicle_cargoRoofline TEXT NOT NULL,"
+      "vehicle_wheelbase TEXT NOT NULL,"
+      "vehicle_make TEXT NOT NULL,"
+      "vehicle_model TEXT NOT NULL,"
+      "vehicle_year INTEGER NOT NULL,"
+      "vehicle_price INTEGER NOT NULL);";
 
   execute_sql(sql, "Error creating vehicle_configuration table: ");
 }
@@ -63,19 +65,20 @@ void Database::execute_sql(const std::string &sql, const std::string &msg) {
 }
 
 void Database::insert_db(const Car &data) {
-  const char *sql = "INSERT INTO vehicle_configuration ("
-                    "vehicle_dealer,"
-                    "vehicle_memo,"
-                    "vehicle_color,"
-                    "vehicle_engine,"
-                    "vehicle_cargoOrPassenger,"
-                    "vehicle_cargoRoofline,"
-                    "vehicle_wheelbase,"
-                    "vehicle_make,"
-                    "vehicle_model,"
-                    "vehicle_year,"
-                    "vehicle_price) "
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+  const char *sql =
+      "INSERT INTO vehicle_configuration ("
+      "vehicle_dealer,"
+      "vehicle_memo,"
+      "vehicle_color,"
+      "vehicle_engine,"
+      "vehicle_cargoOrPassenger,"
+      "vehicle_cargoRoofline,"
+      "vehicle_wheelbase,"
+      "vehicle_make,"
+      "vehicle_model,"
+      "vehicle_year,"
+      "vehicle_price) "
+      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
   sqlite3_stmt *stmt;
 
   if (prepare_stmt(sql, &stmt)) {

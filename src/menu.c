@@ -1,6 +1,8 @@
 #include "menu.h"
-#include "../lib/header.h"
+
 #include <stdio.h>
+
+#include "../lib/header.h"
 
 void welcome() {
   clear_console();
@@ -19,8 +21,9 @@ void welcome() {
   gotoxy(2, 7, 36);
   printf("     \\/  \\/  \\___||_| \\___|\\___/ |_| |_| |_| \\___|(_)");
   gotoxy(0, 9, 34);
-  printf("========================================================="
-         "\n");
+  printf(
+      "========================================================="
+      "\n");
 }
 
 void displayMenu() {

@@ -1,12 +1,13 @@
 #pragma once
 
-#include "../lib/header.h"
 #include <functional>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
+
+#include "../lib/header.h"
 
 /**
  * @brief The car struct is used to store data collected from the user.
@@ -27,7 +28,7 @@ struct Car {
  * store it in a carData struct.
  */
 class VehicleConfiguration {
-public:
+ public:
   using Callback = std::function<void()>;
 
   /**
@@ -56,7 +57,7 @@ public:
    */
   Car get_car_data() const { return car_data; }
 
-private:
+ private:
   Car car_data;
 
   Callback Menu_Callback;
