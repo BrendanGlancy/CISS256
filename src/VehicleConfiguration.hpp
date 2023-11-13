@@ -79,5 +79,6 @@ class VehicleConfiguration {
   std::string get_option(const std::string &prompt,
                          const std::unordered_map<char, std::string> &options);
 
+  // TODO, make this a template function price should be a float
   int get_validated_input(const std::string &prompt);
 };
