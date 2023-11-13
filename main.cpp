@@ -5,13 +5,19 @@
 #include "./src/VehicleConfiguration.hpp"
 #include "./src/menu.h"
 
+/**
+ * Technically you can buffer overflow the message variable
+ * Would be kinda fun to try because you would have to make a lot of car
+ * objects
+ */
 void handleCollectData(std::vector<VehicleConfiguration *> &vehicle_configs,
-                       char *message, int &carObjCount) {
+                       char *message, int &car_objs) {
   vehicle_configs.push_back(new VehicleConfiguration());
-  carObjCount++;
+  // you dont actually need to keep track of these anymore
+  car_objs = vehicle_configs.size();
   clear_console();
-  // TODO: find an alternative to sprintf
-  sprintf(message, "%d car object(s) created", carObjCount);
+  snprintf(message, sizeof("   Data save success   "),
+           "%d car object(s) created", car_objs);
   configCarPrompt();
   vehicle_configs.back()->collect_data();
 }
@@ -54,7 +60,7 @@ void handleUpdateData(Database &db_controller, char *message) {
 
 int main() {
   int count = 0;
-  int carObjCount = 0;
+  int car_objs = 0;
   char *message = (char *)malloc(sizeof("  Delete data success  ") + 2);
 
   bool running = true;
@@ -66,36 +72,37 @@ int main() {
   welcome();
 
   while (running) {
-    if (count > 0) infoHeader(message);
+    if (count > 0)
+      infoHeader(message);
     displayMenu();
 
     int choice = getChoice();
     count++;
 
     switch (choice) {
-      case 1:
-        handleCollectData(vehicle_configs, message, carObjCount);
-        break;
-      case 2:
-        handleStoreData(db_controller, vehicle_configs, message);
-        break;
-      case 3:
-        handleViewData(db_controller, message);
-        break;
-      case 4:
-        handleUpdateData(db_controller, message);
-        break;
-      case 5:
-        handleDeleteData(db_controller, message);
-        break;
-      case 6:
-        clear_console();
-        reset_text_color();
-        running = false;
-        break;
-      default:
-        std::cout << "Invalid choice" << std::endl;
-        break;
+    case 1:
+      handleCollectData(vehicle_configs, message, car_objs);
+      break;
+    case 2:
+      handleStoreData(db_controller, vehicle_configs, message);
+      break;
+    case 3:
+      handleViewData(db_controller, message);
+      break;
+    case 4:
+      handleUpdateData(db_controller, message);
+      break;
+    case 5:
+      handleDeleteData(db_controller, message);
+      break;
+    case 6:
+      clear_console();
+      reset_text_color();
+      running = false;
+      break;
+    default:
+      std::cout << "Invalid choice" << std::endl;
+      break;
     }
   }
 
