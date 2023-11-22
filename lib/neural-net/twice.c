@@ -1,4 +1,3 @@
-#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -11,11 +10,15 @@ float train[][2] = {
 
 float rand_float() { return (float)rand() / (float)RAND_MAX; }
 
-float cost(float w) {
+// input1, input2, input3 ..., b
+// weight1, weight2, weight3
+// input1 * weight1 ... + b
+
+float cost(float weight, float bias) {
   float result = 0.0f;
   for (size_t i = 0; i < TRAIN_COUNT; ++i) {
     float x = train[i][0];
-    float y = x * w;
+    float y = x * weight + bias;
     float d = y - train[i][1];
     result += d * d;
   }
@@ -24,21 +27,25 @@ float cost(float w) {
 }
 
 int main() {
+  // stir the pile of linear algeabra
   srand(time(0));
-  float w = rand_float() * 10.0f;
+  float weight = rand_float() * 10.0f;
+  float bias = rand_float() * 5.0f;
 
   // finite difference -- approximation of deriatives
   float epsilon = 1e-3;
   float learning_rate = 1e-3;
 
-  for (size_t i = 0; i < 10000; ++i) {
-    float distance_cost = (cost(w + epsilon) - cost(w)) / epsilon;
-    w -= learning_rate * distance_cost;
-    printf("w = %f -- cost = %f\n", w, cost(w));
+  for (size_t i = 0; i < 1000; ++i) {
+    float c = cost(weight, bias);
+    float distance_weight = (cost(weight + epsilon, bias) - c) / epsilon;
+    float distance_bias = (cost(weight, bias + epsilon) - c) / epsilon;
+    weight -= learning_rate * distance_weight;
+    printf("weight = %f -- cost = %f -- bias = %f\n", weight, c, bias);
   }
 
   printf("--------------\n");
-  printf("%f\n", w);
+  printf("%f\n", weight);
 
   return EXIT_SUCCESS;
 }
