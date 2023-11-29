@@ -8,7 +8,7 @@
 #ifndef NN_ASSERT
 #include <assert.h>
 #define NN_ASSERT assert
-#endif  // NN_ASSERT
+#endif // NN_ASSERT
 
 #define ARRAY_LEN(a) (sizeof(a) / sizeof(a[0]))
 
@@ -39,13 +39,12 @@ typedef struct {
 #ifndef NN_MALLOC
 #include <stdlib.h>
 #define NN_MALLOC malloc
-#endif  // NN_MALLOC
+#endif // NN_MALLOC
 
 typedef struct {
   size_t rows;
   size_t cols;
-  size_t stride;
-  float *es;
+  float *elements;
 } Matrix;
 
 typedef struct {
@@ -53,7 +52,11 @@ typedef struct {
   float *elements;
 } Row;
 
-#define MAT_AT(m, i, j) (m).es[(i) * (m).stride + j]
+#define MAT_AT(m, i, j) (m).elements[(i) * (m).cols + (j)]
+
+Row row_slice(Row row, size_t start, size_t cols);
+#define row_copy(dst, src) matrix_copy(row_as_matrix(dst), row_as_matrix(src))
+
 #define ROW_AT(row, col) (row).elements[col]
 
 /**
@@ -106,7 +109,7 @@ void matrix_sum(Matrix dest, Matrix a);
 /**
  * Returns a single row of a matrix
  */
-Matrix matrix_row(Matrix m, size_t row);
+Row matrix_row(Matrix m, size_t row);
 
 /**
  * memcopy a matrix
@@ -133,11 +136,12 @@ typedef struct {
   Matrix *weights;
   Matrix *biases;
 
-  Matrix *activations;  // the amount of activations is count + 1
+  Matrix *activations; // the amount of activations is count + 1
 } NN;
 
-#define NN_INPUT(nn) (nn).activations[0]
-#define NN_OUTPUT(nn) (nn).activations[(nn).arch_count]
+#define NN_INPUT(nn) (NN_ASSERT((nn).arch_count > 0), (nn).activations[0])
+#define NN_OUTPUT(nn)                                                          \
+  (NN_ASSERT((nn).arch_count > 0), (nn).activations[(nn).arch_count - 1])
 
 /**
  * Allocates memory for a neural network
@@ -172,7 +176,7 @@ void nn_forward(NN nn);
  * Cost function
  * @param NN nn
  */
-void nn_finite_diff(NN nn, float epsilon, Matrix ti, Matrix to, NN grad);
+NN nn_finite_diff(NN nn, float epsilon, Matrix t, NN grad);
 
 /**
  * Cost function
@@ -180,10 +184,10 @@ void nn_finite_diff(NN nn, float epsilon, Matrix ti, Matrix to, NN grad);
  * @param Matrix ti
  * @param Matrix to
  */
-float nn_cost(NN m, Matrix ti, Matrix to);
-float nn_learn(NN nn, NN g, float rate);
+float nn_cost(NN nn, Matrix t);
+void nn_learn(NN nn, NN g, float rate);
 
-#endif  // NEURALNET_H_
+#endif // NEURALNET_H_
 
 #ifdef NN_IMPLEMENTATION
 
@@ -195,9 +199,8 @@ Matrix matrix_alloc(size_t rows, size_t cols) {
   Matrix m;
   m.rows = rows;
   m.cols = cols;
-  m.stride = cols;
-  m.es = NN_MALLOC(sizeof(*m.es) * rows * cols);
-  NN_ASSERT(m.es != NULL);
+  m.elements = NN_MALLOC(sizeof(*m.elements) * rows * cols);
+  NN_ASSERT(m.elements != NULL);
 
   return m;
 }
@@ -291,12 +294,10 @@ void matrix_sig(Matrix m) {
   }
 }
 
-Matrix matrix_row(Matrix m, size_t row) {
-  return (Matrix){
-      .rows = 1,
+Row matrix_row(Matrix m, size_t row) {
+  return (Row){
       .cols = m.cols,
-      .stride = m.stride,
-      .es = &MAT_AT(m, row, 0),
+      .elements = &MAT_AT(m, row, 0),
   };
 }
 
@@ -316,9 +317,8 @@ void nn_print(NN nn, const char *name) {
   printf("%s = [\n", name);
   for (size_t i = 0; i < nn.arch_count - 1; ++i) {
     snprintf(buf, sizeof(buf), "ws%zu", i);
-    mat_print(nn.weights[i], buf, 4);
+    matrix_print(nn.weights[i], buf, 4);
     snprintf(buf, sizeof(buf), "bs%zu", i);
-    row_print(nn.biases[i], buf, 4);
   }
   printf("]\n");
 }
@@ -338,22 +338,22 @@ void nn_forward(NN nn) {
   }
 }
 
-float nn_cost(NN nn, Matrix ti, Matrix to) {
-  NN_ASSERT(ti.rows == to.rows);
-  size_t n = ti.rows;
+float nn_cost(NN nn, Matrix t) {
+  NN_ASSERT(NN_INPUT(nn).cols + NN_OUTPUT(nn).cols == t.cols);
+  size_t n = t.rows;
 
   float c = 0;
   for (size_t i = 0; i < n; ++i) {
-    Matrix x = matrix_row(ti, i);
-    Matrix y = matrix_row(to, i);
+    Row row = matrix_row(t, i);
+    Row x = row_slice(row, 0, NN_INPUT(nn).cols);
+    Row y = row_slice(row, NN_INPUT(nn).cols, NN_INPUT(nn).cols);
 
-    matrix_copy(NN_INPUT(nn), x);
+    matrix_copy(NN_INPUT(nn), row_as_matrix(x));
     nn_forward(nn);
-    NN_OUTPUT(nn);
 
-    size_t q = to.cols;
+    size_t q = y.cols;
     for (size_t j = 0; j < q; ++j) {
-      float d = MAT_AT(NN_OUTPUT(nn), 0, j) - MAT_AT(y, 0, j);
+      float d = ROW_AT(NN_OUTPUT(nn), j) - ROW_AT(y, j);
       c += d * d;
     }
   }
@@ -361,34 +361,35 @@ float nn_cost(NN nn, Matrix ti, Matrix to) {
   return c / n;
 }
 
-void nn_finite_diff(NN nn, float epsilon, Matrix ti, Matrix to, NN grad) {
+NN nn_finite_diff(NN nn, float epsilon, Matrix t, NN grad) {
   float saved;
-  float c = nn_cost(nn, epsilon, ti, to, grad);
+  float c = nn_cost(nn, t);
 
   NN g = nn_alloc(nn.arch, nn.arch_count);
 
-  for (size_t i = 0; i < m.count; ++i) {
-    Matrix w = nn.weights[i];
-    for (size_t j = 0; j < w.rows; ++j) {
-      for (size_t k = 0; k < w.cols; ++k) {
-        saved = MAT_AT(w, j, k);
-        MAT_AT(w, j, k) += epsilon;
-        MAT_AT(nn_cost(g.weights[i], j, k) = (nn_cost(m, epsilon, t) - c) / epsilon;
-        MAT_AT(nn.weights, j, k) = saved;
+  for (size_t i = 0; i < nn.arch_count; ++i) {
+    for (size_t j = 0; j < nn.weights[i].rows; ++j) {
+      for (size_t k = 0; k < nn.weights[i].cols; ++k) {
+        saved = MAT_AT(nn.weights[i], j, k);
+        MAT_AT(nn.weights[i], j, k) += epsilon;
+        MAT_AT(g.weights[i], j, k) = (nn_cost(nn, t) - c) / epsilon;
+        MAT_AT(nn.weights[i], j, k) = saved;
       }
     }
 
-    for (size_t k = 0; i < length; k++) {
-      saved = MAT_AT(nn.biases, i, k);
-      ROW_AT(nn.biases, i, k) += epsilon;
+    for (size_t k = 0; k < nn.biases[i].cols; k++) {
+      saved = ROW_AT(nn.biases[i], k);
+      ROW_AT(nn.biases[i], k) += epsilon;
       ROW_AT(g.biases[i], k) = (nn_cost(nn, t) - c) / epsilon;
-      ROW_AT(nn.biases, i, k) = saved;
+      ROW_AT(nn.biases[i], k) = saved;
     }
   }
+
+  return g;
 }
 
 void nn_learn(NN nn, NN g, float rate) {
-  for (size_t i = 0; i < nn.count; ++i) {
+  for (size_t i = 0; i < nn.arch_count - 1; ++i) {
     for (size_t j = 0; j < nn.weights[i].rows; ++j) {
       for (size_t k = 0; k < nn.weights[i].cols; ++k) {
         MAT_AT(nn.weights[i], j, k) -= MAT_AT(g.weights[i], j, k) * rate;
@@ -396,11 +397,26 @@ void nn_learn(NN nn, NN g, float rate) {
     }
 
     for (size_t k = 0; k < nn.biases[i].cols; ++k) {
-      for (size_t k = 0; k < nn.biases[i].cols; ++k) {
-        MAT_AT(nn.biases[i], k) -= MAT_AT(g.biases[i], k) * rate;
-      }
+      ROW_AT(nn.biases[i], k) -= ROW_AT(g.biases[i], k) * rate;
     }
   }
 }
 
-#endif  // NN_IMPLEMENTATION
+Row row_slice(Row row, size_t start, size_t cols) {
+  NN_ASSERT(start < row.cols);
+  NN_ASSERT(start + cols <= row.cols);
+  return (Row){
+      .cols = cols,
+      .elements = &ROW_AT(row, start),
+  };
+}
+
+Matrix row_as_matrix(Row row) {
+  return (Matrix){
+      .rows = 1,
+      .cols = row.cols,
+      .elements = row.elements,
+  };
+}
+
+#endif // NN_IMPLEMENTATION
