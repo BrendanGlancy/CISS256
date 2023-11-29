@@ -27,7 +27,7 @@ typedef struct {
   float *elements;
 } Matrix;
 
-#define MAT_AT(m, i, j) (m).elements[(i) * (m).cols + (j)]
+#define MAT_AT(m, i, j) (m).elements[(i) * (m).stride + (j)]
 
 /**
  * Allocates memory for our matrix
@@ -180,7 +180,7 @@ void matrix_multi(Matrix dest, Matrix a, Matrix b) {
 
   for (size_t i = 0; i < dest.rows; ++i) {
     for (size_t j = 0; j < dest.cols; ++j) {
-      MAT_AT(dest, i, j);
+      MAT_AT(dest, i, j) = 0;
       for (size_t k = 0; k < n; ++k) {
         MAT_AT(dest, i, j) += MAT_AT(a, i, k) * MAT_AT(b, k, j);
       }
