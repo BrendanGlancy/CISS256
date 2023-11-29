@@ -187,6 +187,14 @@ NN nn_finite_diff(NN nn, float epsilon, Matrix t, NN grad);
 float nn_cost(NN nn, Matrix t);
 void nn_learn(NN nn, NN g, float rate);
 
+/**
+ * Backpropagation
+ * @param NN nn
+ * @param Matrix ti
+ * @param Matrix to
+ */
+void nn_backprop(NN nn, Matrix ti, Matrix to);
+
 #endif // NEURALNET_H_
 
 #ifdef NN_IMPLEMENTATION
@@ -400,6 +408,23 @@ void nn_learn(NN nn, NN g, float rate) {
       ROW_AT(nn.biases[i], k) -= ROW_AT(g.biases[i], k) * rate;
     }
   }
+}
+
+void nn_zero(NN nn) {
+  for (size_t i = 0; i < nn.arch_count; ++i) {
+    matrix_fill(nn.weights[i], 0);
+    matrix_fill(nn.biases[i], 0);
+    matrix_fill(nn.activations[i], 0);
+  }
+  matrix_fill(nn.activations[nn.arch], 0);
+}
+
+void nn_backprop(NN nn, NN g, Matrix ti, Matrix to) {
+  NN_ASSERT(NN_INPUT(nn).cols == ti.cols);
+  size_t n = ti.rows;
+  NN_ASSERT(NN_OUTPUT(nn).cols == to.cols);
+
+  nn_zero(grad);
 }
 
 Row row_slice(Row row, size_t start, size_t cols) {
