@@ -1,5 +1,5 @@
 # Specify the default compiler
-COMPILER ?= GCC
+COMPILER ?= CLANG
 
 # Specify the compilers
 ifeq ($(COMPILER),CLANG)
@@ -32,7 +32,7 @@ all: $(TARGET)
 
 # Test files
 TEST_SOURCES = tests/run-test.cpp src/Database.cpp
-TEST_C_SOURCES = lib/common.c 
+TEST_C_SOURCES = lib/common.c  
 TEST_OBJECTS = $(TEST_SOURCES:.cpp=.o) $(TEST_C_SOURCES:.c=.o)
 TEST_TARGET = run_tests
 
